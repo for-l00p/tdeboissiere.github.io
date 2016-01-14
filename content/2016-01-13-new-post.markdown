@@ -1,0 +1,7 @@
+Title: New post 
+Date: 2016-1-13 18:15
+Category: 
+Tags:
+Author: TDB
+Summary:
+Status: draft
