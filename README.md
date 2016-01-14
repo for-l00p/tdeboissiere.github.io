@@ -1,2 +1,1 @@
-# tdeboissiere.github.io
-new
+# Pelican + Bootstrap3 blog source
