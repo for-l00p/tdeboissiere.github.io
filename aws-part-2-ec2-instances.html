@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en" prefix="og: http://ogp.me/ns# fb: https://www.facebook.com/2008/fbml">
+<head>
+    <title>AWS Part 2 : EC2 instances - Pony Pony Learn Learn</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+<link rel="canonical" href="/aws-part-2-ec2-instances.html">
+
+        <meta name="author" content="TDB" />
+        <meta name="keywords" content="AWS" />
+        <meta name="description" content="In this tutorial, we&#39;ll learn more about Amazon instances: how to configure and launch them, how to connect to them and some basic functions of the command line tools." />
+
+        <meta property="og:site_name" content="Pony Pony Learn Learn" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="AWS Part 2 : EC2 instances"/>
+        <meta property="og:url" content="/aws-part-2-ec2-instances.html"/>
+        <meta property="og:description" content="In this tutorial, we&#39;ll learn more about Amazon instances: how to configure and launch them, how to connect to them and some basic functions of the command line tools."/>
+        <meta property="article:published_time" content="2016-01-02" />
+            <meta property="article:section" content="AWS" />
+            <meta property="article:tag" content="AWS" />
+            <meta property="article:author" content="TDB" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="/theme/css/bootstrap.united.min.css" type="text/css"/>
+    <link href="/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="/theme/css/pygments/monokai.css" rel="stylesheet">
+    <link href="/theme/tipuesearch/tipuesearch.css" rel="stylesheet">
+    <link rel="stylesheet" href="/theme/css/style.css" type="text/css"/>
+
+
+
+
+
+</head>
+<body>
+
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="/" class="navbar-brand">
+Pony Pony Learn Learn            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/pages/about.html">About</a></li>
+                    <li><a href="/pages/project.html">Projects</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><span>
+                <form class="navbar-search" action="/search.html">
+                  <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input" required>
+                </form></span>
+              </li>
+              <li><a href="/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="/aws-part-2-ec2-instances.html"
+                       rel="bookmark"
+                       title="Permalink to AWS Part 2 : EC2 instances">
+                        AWS Part 2 : EC2 instances
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2016-01-02T00:00:00+11:00"> janv. 02, 2016</time>
+    </span>
+
+            <span class="label label-default">Series</span>
+            Part 2 of AWS Tutorials
+
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="/tag/aws.html">AWS</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <h1>1. Launch an instance</h1>
+<ul>
+<li>Connect to the <a href="https://console.aws.amazon.com/ec2/">Amazon EC2 console</a></li>
+<li>Go to the <strong>EC2 dashboard</strong>, click on <strong>Launch instance</strong>.</li>
+<li>Then select the Ubuntu Server AMI.</li>
+<li>Stick to the t2.micro instance (free tier eligible).</li>
+<li>Go to <strong>Configure Security Group</strong> and select the group we configured in <a href="../AWS tutorial part 1">AWS Part 1</a>.</li>
+<li>We are ready to <strong>Launch</strong></li>
+<li>Select the key pair we created in <a href="../AWS tutorial part 1">AWS Part 1</a> when prompted. A new key pair can also be created.</li>
+<li>Click <strong>Launch Instances</strong></li>
+</ul>
+<p><strong>N.B.</strong> Don't select the Proceed without a key pair option. If you launch your instance without a key pair, then you can't connect to it.</p>
+<p><strong>N.B.</strong> It can take some time for the instance to launch. Review its status in <strong>Status Checks</strong> column.</p>
+<h1>2. Connect to your instance with an SSH</h1>
+<ul>
+<li>Verify an SSH client is installed on your computer</li>
+<li>Install Amazon CLI tools.</li>
+</ul>
+<p>Download the tools from this link</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>wget http://s3.amazonaws.com/ec2-downloads/ec2-api-tools.zip
+</pre></div>
+</td></tr></table>
+
+<p>And unzip in a suitable directory</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre>sudo mkdir /usr/local/ec2
+sudo unzip ec2-api-tools.zip -d /usr/local/ec2
+</pre></div>
+</td></tr></table>
+
+<h2>Install and configure JAVA</h2>
+<p>The Amazon EC2 CLI tools require Java. You can check Java is installed by running </p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>which java
+</pre></div>
+</td></tr></table>
+
+<p>which should yield something like :</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>/usr/bin/java
+</pre></div>
+</td></tr></table>
+
+<p>If that is not the case, install java as indicated <a href="http://askubuntu.com/questions/521145/how-to-install-oracle-java-on-ubuntu-14-04">here</a>.</p>
+<p>We now need to find the Java home directory. The which command we executed earlier returns Java's location in the $PATH environment variable but most of the time, it's a symbolic link.</p>
+<p>You can check this by running :</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>file $(which java)
+</pre></div>
+</td></tr></table>
+
+<p>which in my case returns :</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>/usr/bin/java: symbolic link to `/etc/alternatives/java&#39;
+</pre></div>
+</td></tr></table>
+
+<p>by iterating the file command, you can find the true java home directory :</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre>file /etc/alternatives/java
+&gt; /etc/alternatives/java: symbolic link to `/usr/lib/jvm/java-8-oracle/jre/bin/java&#39;
+</pre></div>
+</td></tr></table>
+
+<p>the last location is the actual binary, which you can check by running :</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre>file /usr/lib/jvm/java-8-oracle/jre/bin/java
+&gt; /usr/lib/jvm/java-8-oracle/jre/bin/java: ELF 64-bit LSB  executable
+</pre></div>
+</td></tr></table>
+
+<p>In this example, the java home directory is :</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>/usr/lib/jvm/java-8-oracle/jre/
+</pre></div>
+</td></tr></table>
+
+<p>We are now going to set the JAVA_HOME variable to the home directory we identified :</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>export JAVA_HOME=&quot;/usr/lib/jvm/java-8-oracle/jre/&quot;
+</pre></div>
+</td></tr></table>
+
+<p>To check this has been set correctly, use :</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="p">$</span><span class="nv">JAVA_HOME</span><span class="x">/bin/java -version</span>
+</pre></div>
+</td></tr></table>
+
+<p>which should get you :</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre>java version &quot;1.8.0_66&quot;
+Java(TM) SE Runtime Environment (build 1.8.0_66-b17)
+Java HotSpot(TM) 64-Bit Server VM (build 25.66-b17, mixed mode)
+</pre></div>
+</td></tr></table>
+
+<p>Add this variable definition to your .bashrc so that JAVA_HOME is defined whenever you spawn a new shell.</p>
+<h2>Set the CLI Tools location</h2>
+<p>The Amazon EC2 CLI tools read the <code>EC2_HOME</code> environment variable to locate supporting libraries. Before using these tools, set EC2_HOME to the directory path where you unzipped them. In your .bashrc, write :</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>export EC2_HOME=&quot;/usr/local/ec2/ec2-api-tools-1.7.5.1&quot;
+</pre></div>
+</td></tr></table>
+
+<p>where the version number are specific to the version you downloaded. To get the right numbers, use :</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>ls /usr/local/ec2
+</pre></div>
+</td></tr></table>
+
+<p>We will also add the bin directory for the CLI tools to our system path. </p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">export PATH=&quot;</span><span class="p">$</span><span class="nv">PATH</span><span class="x">:</span><span class="p">$</span><span class="nv">EC2_HOME</span><span class="x">/bin&quot;</span>
+</pre></div>
+</td></tr></table>
+
+<h2>Set your identity for the CLI Tools</h2>
+<p>Your access keys identify you to the Amazon EC2 CLI tools. There are two types of access keys: access key IDs (for example, AKIAIOSFODNN7EXAMPLE) and secret access keys (for example, wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY). You should have stored your access keys in a safe place when you received them. </p>
+<p>We will set the following environment variable which will serve as default values for the access and secret keys. This will save you from entering your keys for each command.</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre>export AWS_ACCESS_KEY=your-aws-access-key-id 
+export AWS_SECRET_KEY=your-aws-secret-key
+</pre></div>
+</td></tr></table>
+
+<p>We can check that the keys have been properly set</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>ec2-describe-regions
+</pre></div>
+</td></tr></table>
+
+<p>Which should yield something like :</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="highlight"><pre>&gt;REGION eu-west-1   ec2.eu-west-1.amazonaws.com
+&gt;REGION ap-southeast-1  ec2.ap-southeast-1.amazonaws.com
+&gt;REGION ap-southeast-2  ec2.ap-southeast-2.amazonaws.com
+&gt;REGION eu-central-1    ec2.eu-central-1.amazonaws.com
+&gt;REGION ap-northeast-1  ec2.ap-northeast-1.amazonaws.com
+&gt;REGION us-east-1   ec2.us-east-1.amazonaws.com
+&gt;REGION sa-east-1   ec2.sa-east-1.amazonaws.com
+&gt;REGION us-west-1   ec2.us-west-1.amazonaws.com
+&gt;REGION us-west-2   ec2.us-west-2.amazonaws.com
+</pre></div>
+</td></tr></table>
+
+<h2>Change the region (if needed)</h2>
+<p>The default EC2 CLI region is US East (us-east-1).
+To change this region, you need to set the following environment variable</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>export EC2_URL=https://&lt;service_endpoint&gt;
+</pre></div>
+</td></tr></table>
+
+<p>where the service endpoint is something like ec2.region.amazonaws.com (cf <code>ec2-describe-regions</code>). </p>
+<h2>Connect via SSH</h2>
+<p>In a terminal, go to the location of the private key file (.pem) used when launching the instance.
+In a command line shell, change directories to the location of the private key file that you created when you launched the instance.</p>
+<p>The SSH command should be something like :</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>ssh -i /path/my-key-pair.pem user_name@public_dns_name
+</pre></div>
+</td></tr></table>
+
+<p>where use name is <code>ubuntu</code> for an ubuntu AMI and the public dns name is specified in the AWS console. Alternatively, the dns name can be found using </p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>ec2-describe-instances
+</pre></div>
+</td></tr></table>
+
+<p>For instance :</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>ssh -i /path/my-key-pair.pem ubuntu@ec2-52-62-114-212.ap-southeast-2.compute.amazonaws.com
+</pre></div>
+</td></tr></table>
+
+<p>When prompted, enter yes.</p>
+<p>You should get something like :</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26</pre></div></td><td class="code"><div class="highlight"><pre>Welcome to Ubuntu 14.04.2 LTS (GNU/Linux 3.13.0-48-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com/
+
+  System information as of Sun Jan  3 07:11:31 UTC 2016
+
+  System load: 0.0              Memory usage: 5%   Processes:       82
+  Usage of /:  9.8% of 7.74GB   Swap usage:   0%   Users logged in: 0
+
+  Graph this data and manage this system at:
+    https://landscape.canonical.com/
+
+  Get cloud support with Ubuntu Advantage Cloud Guest:
+    http://www.ubuntu.com/business/services/cloud
+
+0 packages can be updated.
+0 updates are security updates.
+
+
+
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+</pre></div>
+</td></tr></table>
+
+<p>Congrats, you are now connected !</p>
+<p>You can transfer files easily with the scp command :</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>scp -i /path/my-key-pair.pem myfile ubuntu@ec2-52-62-114-212.ap-southeast-2.compute.amazonaws.com:~
+</pre></div>
+</td></tr></table>
+
+<h1>3. Close your an instance</h1>
+<ul>
+<li>Select your instance in the AWS console.</li>
+<li><strong>Actions</strong> , <strong>Instance State</strong>, <strong>Terminate</strong>.</li>
+<li>Choose <strong>Yes, Terminate</strong>.</li>
+</ul>
+            </div>
+            <!-- /.entry-content -->
+<section class="well" id="related-posts">
+    <h4>Part 2 of the AWS Tutorials series</h4>
+       <h5>Previous articles</h5>
+       <ul>
+           <li><a href="/aws-part-1-setting-up-amazon-ec2.html">AWS Part 1 : Setting up Amazon EC2</a></li>
+       </ul>
+       <h5>Next articles</h5>
+       <ul>
+           <li><a href="/aws-part-3-installing-python-and-custom-ami.html">AWS Part 3 : Installing python and custom AMI</a></li>
+       </ul>
+</section>
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+              <ul class="list-group" id="social">
+                <li class="list-group-item"><a href="https://www.linkedin.com/in/thibault-main-de-boissi%C3%A8re-25476699"><i class="fa fa-linkedin-square fa-lg"></i> linkedin</a></li>
+                <li class="list-group-item"><a href="http://github.com/tdeboissiere"><i class="fa fa-github-square fa-lg"></i> github</a></li>
+              </ul>
+            </li>
+
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Recent Posts</span></h4>
+                <ul class="list-group" id="recentposts">
+                    <li class="list-group-item">
+                        <a href="/object-oriented-python.html">
+                            Object oriented Python
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="/aws-part-3-installing-python-and-custom-ami.html">
+                            AWS Part 3 : Installing python and custom AMI
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="/aws-part-2-ec2-instances.html">
+                            AWS Part 2 : EC2 instances
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="/aws-part-1-setting-up-amazon-ec2.html">
+                            AWS Part 1 : Setting up Amazon EC2
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="list-group-item"><a href="/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                <ul class="list-group" id="categories">
+                    <li class="list-group-item">
+                        <a href="/category/aws.html">
+                            <i class="fa fa-folder-open fa-lg"></i> AWS
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="/category/python.html">
+                            <i class="fa fa-folder-open fa-lg"></i> Python
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="list-group-item"><a href="/"><h4><i class="fa fa-tags fa-lg"></i><span class="icon-label">Tags</span></h4></a>
+                <ul class="list-group " id="tags">
+                    <li class="list-group-item tag-1">
+                        <a href="/tag/aws.html">
+                            AWS
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="/tag/python.html">
+                            python
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+
+    <li class="list-group-item">
+        <ul class="list-group" id="links">
+            <img width="100%" class="img-thumbnail" src="images/pony.jpg"/>
+        </ul>
+    </li>
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2016 Thibault de Boissiere
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="/theme/js/respond.min.js"></script>
+
+    <script src="/theme/js/bodypadding.js"></script>
+
+</body>
+</html>
