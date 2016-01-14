@@ -20,7 +20,7 @@ DEFAULT_PAGINATION = 10
 PYGMENTS_STYLE = "monokai"
 # Banner and title
 BANNER = 'images/banner.JPG'
-BANNER_SUBTITLE = 'Machine Learning, Data science and ponies'
+BANNER_SUBTITLE = 'Machine Learning, Data science and Ponies'
 #Menu
 DISPLAY_PAGES_ON_MENU = False
 BOOTSTRAP_NAVBAR_INVERSE = True
