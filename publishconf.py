@@ -22,4 +22,4 @@ DELETE_OUTPUT_DIRECTORY = True
 
 GOOGLE_ANALYTICS = "UA-72059260-1"
 DISQUS_SITENAME = "tdeboissiere"
-DISQUSURL = 'http://blog.yourdomain.com'
+DISQUSURL = 'http://tdeboissiere.github.io/'
