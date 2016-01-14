@@ -138,21 +138,6 @@ def live_build(port=8080):
     server.watch('*.css')  # 10
     server.serve(liveport=35729, port=port)  # 11
 
-
-def github(publish_drafts=False): # 2
-
-    try:  # 3
-        if os.path.exists('output/drafts'):
-            if not publish_drafts:
-                local('rm -rf output/drafts')
-    except Exception:
-        pass
-
-    local('ghp-import output')  # 4
-    local('git push')
-     # 'git@github.com:tdeboissiere/tdeboissiere.github.io.git' 'gh-pages:master') # 5
-    local('rm -rf output')  # 6
-
 def push2git(msg):
 
     try:  
