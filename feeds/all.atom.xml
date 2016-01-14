@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Pony Pony Learn Learn</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2016-01-06T00:00:00+11:00</updated><entry><title>Object oriented Python</title><link href="/object-oriented-python.html" rel="alternate"></link><updated>2016-01-06T00:00:00+11:00</updated><author><name>TDB</name></author><id>tag:,2016-01-06:object-oriented-python.html</id><summary type="html">&lt;h1&gt;0. Old style vs new style class&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Pony Pony Learn Learn</title><link href="http://tdeboissiere.github.io/" rel="alternate"></link><link href="http://tdeboissiere.github.io/feeds/all.atom.xml" rel="self"></link><id>http://tdeboissiere.github.io/</id><updated>2016-01-06T00:00:00+11:00</updated><entry><title>Object oriented Python</title><link href="http://tdeboissiere.github.io/object-oriented-python.html" rel="alternate"></link><updated>2016-01-06T00:00:00+11:00</updated><author><name>TDB</name></author><id>tag:tdeboissiere.github.io,2016-01-06:object-oriented-python.html</id><summary type="html">&lt;h1&gt;0. Old style vs new style class&lt;/h1&gt;
 &lt;p&gt;Up to Python 2.1, old-style classes were the only flavour available to the user. The concept of (old-style) class is unrelated to the concept of type: if x is an instance of an old-style class, then x.&lt;strong&gt;class&lt;/strong&gt; designates the class of x, but type(x) is always &lt;type 'instance'&gt;. This reflects the fact that all old-style instances, independently of their class, are implemented with a single built-in type, called instance.&lt;/p&gt;
 &lt;p&gt;For old-style classes (the only flavour of classes up to Python 2.1), have the following property :
 If x is an instance of the class, then &lt;code&gt;x.__class__&lt;/code&gt; designates the class of x.
@@ -192,7 +192,7 @@ SomeBaseClass.__init__(self) called
 &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 
 &lt;p&gt;So we see that the dependency on InjectMe is only taken into account through the use of &lt;code&gt;super&lt;/code&gt;.
-Using &lt;code&gt;super&lt;/code&gt;, we can inject a class (&lt;code&gt;InjectMe&lt;/code&gt;) between two other classes (&lt;code&gt;Child&lt;/code&gt; and &lt;code&gt;SomeBaseClass&lt;/code&gt;). This gives you a way of influencing the behaviour of the &lt;code&gt;SuperInjector&lt;/code&gt; class without modifying the code of the base class.&lt;/p&gt;</summary><category term="python"></category></entry><entry><title>AWS Part 3 : Installing python and custom AMI</title><link href="/aws-part-3-installing-python-and-custom-ami.html" rel="alternate"></link><updated>2016-01-04T00:00:00+11:00</updated><author><name>TDB</name></author><id>tag:,2016-01-04:aws-part-3-installing-python-and-custom-ami.html</id><summary type="html">&lt;h1&gt;1. Launch an Amazon instance&lt;/h1&gt;
+Using &lt;code&gt;super&lt;/code&gt;, we can inject a class (&lt;code&gt;InjectMe&lt;/code&gt;) between two other classes (&lt;code&gt;Child&lt;/code&gt; and &lt;code&gt;SomeBaseClass&lt;/code&gt;). This gives you a way of influencing the behaviour of the &lt;code&gt;SuperInjector&lt;/code&gt; class without modifying the code of the base class.&lt;/p&gt;</summary><category term="python"></category></entry><entry><title>AWS Part 3 : Installing python and custom AMI</title><link href="http://tdeboissiere.github.io/aws-part-3-installing-python-and-custom-ami.html" rel="alternate"></link><updated>2016-01-04T00:00:00+11:00</updated><author><name>TDB</name></author><id>tag:tdeboissiere.github.io,2016-01-04:aws-part-3-installing-python-and-custom-ami.html</id><summary type="html">&lt;h1&gt;1. Launch an Amazon instance&lt;/h1&gt;
 &lt;p&gt;Launch an Amazon instance corresponding to your needs.
 For more information, check &lt;a href="../AWS tutorial part 1"&gt;AWS Part 1&lt;/a&gt;.&lt;/p&gt;
 &lt;h1&gt;2. Install python software&lt;/h1&gt;
@@ -249,7 +249,7 @@ Connection to ec2-52-62-15-17.ap-southeast-2.compute.amazonaws.com closed.&lt;/p
 &lt;/li&gt;
 &lt;li&gt;You can now launch an instance from your new AMI.&lt;/li&gt;
 &lt;li&gt;It contains all the packages that we installed in step 2.&lt;/li&gt;
-&lt;/ul&gt;</summary><category term="AWS"></category></entry><entry><title>AWS Part 2 : EC2 instances</title><link href="/aws-part-2-ec2-instances.html" rel="alternate"></link><updated>2016-01-02T00:00:00+11:00</updated><author><name>TDB</name></author><id>tag:,2016-01-02:aws-part-2-ec2-instances.html</id><summary type="html">&lt;h1&gt;1. Launch an instance&lt;/h1&gt;
+&lt;/ul&gt;</summary><category term="AWS"></category></entry><entry><title>AWS Part 2 : EC2 instances</title><link href="http://tdeboissiere.github.io/aws-part-2-ec2-instances.html" rel="alternate"></link><updated>2016-01-02T00:00:00+11:00</updated><author><name>TDB</name></author><id>tag:tdeboissiere.github.io,2016-01-02:aws-part-2-ec2-instances.html</id><summary type="html">&lt;h1&gt;1. Launch an instance&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;Connect to the &lt;a href="https://console.aws.amazon.com/ec2/"&gt;Amazon EC2 console&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;Go to the &lt;strong&gt;EC2 dashboard&lt;/strong&gt;, click on &lt;strong&gt;Launch instance&lt;/strong&gt;.&lt;/li&gt;
@@ -485,7 +485,7 @@ applicable law.
 &lt;li&gt;Select your instance in the AWS console.&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;Actions&lt;/strong&gt; , &lt;strong&gt;Instance State&lt;/strong&gt;, &lt;strong&gt;Terminate&lt;/strong&gt;.&lt;/li&gt;
 &lt;li&gt;Choose &lt;strong&gt;Yes, Terminate&lt;/strong&gt;.&lt;/li&gt;
-&lt;/ul&gt;</summary><category term="AWS"></category></entry><entry><title>AWS Part 1 : Setting up Amazon EC2</title><link href="/aws-part-1-setting-up-amazon-ec2.html" rel="alternate"></link><updated>2015-12-16T00:00:00+11:00</updated><author><name>TDB</name></author><id>tag:,2015-12-16:aws-part-1-setting-up-amazon-ec2.html</id><summary type="html">&lt;h1&gt;1. Setup your account&lt;/h1&gt;
+&lt;/ul&gt;</summary><category term="AWS"></category></entry><entry><title>AWS Part 1 : Setting up Amazon EC2</title><link href="http://tdeboissiere.github.io/aws-part-1-setting-up-amazon-ec2.html" rel="alternate"></link><updated>2015-12-16T00:00:00+11:00</updated><author><name>TDB</name></author><id>tag:tdeboissiere.github.io,2015-12-16:aws-part-1-setting-up-amazon-ec2.html</id><summary type="html">&lt;h1&gt;1. Setup your account&lt;/h1&gt;
 &lt;p&gt;&lt;br&gt;  &lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Start by signing up for an AWS account.&lt;/li&gt;
