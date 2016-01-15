@@ -59,7 +59,7 @@ SHOW_SERIES = True
 PLUGIN_PATHS = ['plugins']
 PLUGINS = ['liquid_tags.img', 'liquid_tags.video',
            'liquid_tags.youtube', 'liquid_tags.vimeo',
-           'liquid_tags.include_code', "tipue_search", 'tag_cloud', 'series']
+           'liquid_tags.include_code', "tipue_search", 'tag_cloud', 'series',]
 
 DIRECT_TEMPLATES = ('index', 'categories', 'authors', 'archives', 'search')
 

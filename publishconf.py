@@ -20,6 +20,6 @@ DELETE_OUTPUT_DIRECTORY = True
 
 # Following items are often useful when publishing
 
-GOOGLE_ANALYTICS = "UA-72059260-1"
+GOOGLE_ANALYTICS = "UA-72484622-1"
 DISQUS_SITENAME = "tdeboissiere"
 DISQUSURL = 'http://tdeboissiere.github.io/'

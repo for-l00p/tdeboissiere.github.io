@@ -8,6 +8,7 @@ Summary: All about object oriented python.
 # 0. Old style vs new style class
 
 
+
 Up to Python 2.1, old-style classes were the only flavour available to the user. The concept of (old-style) class is unrelated to the concept of type: if x is an instance of an old-style class, then x.__class__ designates the class of x, but type(x) is always <type 'instance'>. This reflects the fact that all old-style instances, independently of their class, are implemented with a single built-in type, called instance.
 
 For old-style classes (the only flavour of classes up to Python 2.1), have the following property :
