@@ -89,3 +89,9 @@ AUTHOR_FEED_RSS = None
 
 # Add search box
 SEARCH_BOX = True
+
+
+# Add this just in case
+GOOGLE_ANALYTICS = "UA-72484622-1"
+DISQUS_SITENAME = "tdeboissiere"
+DISQUSURL = 'http://tdeboissiere.github.io/'
