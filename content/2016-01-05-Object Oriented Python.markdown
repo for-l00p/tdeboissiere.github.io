@@ -3,6 +3,7 @@ Date: 2016-01-06
 Category: Python
 Tags: python
 Author: TDB
+Status: draft
 Summary: All about object oriented python.
 
 # 0. Old style vs new style class
