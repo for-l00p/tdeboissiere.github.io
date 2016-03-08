@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 import os
 
 AUTHOR = u'Thibault de Boissiere'
-SITENAME = u'Pony Pony Learn Learn'
+SITENAME = u'Pony Pony Learn Learn2'
 SITEURL = ''
 
 PATH = 'content'
