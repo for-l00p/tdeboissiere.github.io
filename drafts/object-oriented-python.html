@@ -126,12 +126,12 @@ However, <code>type(x)</code> will always return <code>instance</code>.</p>
 6
 7
 8
-9</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">NewStyleClass</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">NewStyleClass</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">pass</span>
 
 <span class="k">class</span> <span class="nc">AnotherNewStyleClass</span><span class="p">(</span><span class="n">NewStyleClass</span><span class="p">):</span>
     <span class="k">pass</span>
-<span class="n">Old</span><span class="o">-</span><span class="n">style</span> <span class="n">classes</span> <span class="n">don</span><span class="s">&#39;t.</span>
+<span class="n">Old</span><span class="o">-</span><span class="n">style</span> <span class="n">classes</span> <span class="n">don</span><span class="s1">&#39;t.</span>
 
 <span class="k">class</span> <span class="nc">OldStyleClass</span><span class="p">():</span>
     <span class="k">pass</span>
@@ -147,7 +147,7 @@ However, <code>type(x)</code> will always return <code>instance</code>.</p>
 4
 5
 6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">TestOverloading</span><span class="p">():</span>
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TestOverloading</span><span class="p">():</span>
 
 <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_val</span> <span class="o">=</span> <span class="n">a</span>
@@ -160,7 +160,7 @@ However, <code>type(x)</code> will always return <code>instance</code>.</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
-4</pre></div></td><td class="code"><div class="highlight"><pre>&gt; a = TestOverloading(2)
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span>&gt; a = TestOverloading(2)
 &gt; b = TestOverloading(3)
 &gt; print a+b
 &gt; 6
@@ -174,9 +174,9 @@ However, <code>type(x)</code> will always return <code>instance</code>.</p>
 4
 5
 6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Base</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Base</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">print</span> <span class="s">&quot;1&quot;</span>
+        <span class="k">print</span> <span class="s2">&quot;1&quot;</span>
 
 <span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -195,15 +195,15 @@ N.B. The base class needs to inherit from object</p>
 6
 7
 8
-9</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">Base</span><span class="p">():</span>
+9</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Base</span><span class="p">():</span>
     <span class="k">def</span> <span class="nf">_method</span><span class="p">():</span>
-        <span class="c"># do things</span>
+        <span class="c1"># do things</span>
 
 <span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">_method</span><span class="p">():</span>
-        <span class="c"># do other things</span>
-        <span class="c"># this overrides the base class _method</span>
+        <span class="c1"># do other things</span>
+        <span class="c1"># this overrides the base class _method</span>
 </pre></div>
 </td></tr></table>
 
@@ -223,7 +223,7 @@ An ABC cannot be instantiated.</p>
 4
 5
 6
-7</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">ChildA</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">ChildA</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">Base</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
@@ -256,23 +256,23 @@ An ABC cannot be instantiated.</p>
 19
 20
 21
-22</pre></div></td><td class="code"><div class="highlight"><pre><span class="k">class</span> <span class="nc">SomeBaseClass</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+22</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">SomeBaseClass</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&#39;SomeBaseClass.__init__(self) called&#39;</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;SomeBaseClass.__init__(self) called&#39;</span><span class="p">)</span>
 
 <span class="k">class</span> <span class="nc">Child</span><span class="p">(</span><span class="n">SomeBaseClass</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&#39;Child.__init__(self) called&#39;</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Child.__init__(self) called&#39;</span><span class="p">)</span>
         <span class="n">SomeBaseClass</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
 <span class="k">class</span> <span class="nc">SuperChild</span><span class="p">(</span><span class="n">SomeBaseClass</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&#39;SuperChild.__init__(self) called&#39;</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;SuperChild.__init__(self) called&#39;</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">SuperChild</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
 
 <span class="k">class</span> <span class="nc">InjectMe</span><span class="p">(</span><span class="n">SomeBaseClass</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">print</span><span class="p">(</span><span class="s">&#39;InjectMe.__init__(self) called&#39;</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;InjectMe.__init__(self) called&#39;</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">InjectMe</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
 
 <span class="k">class</span> <span class="nc">UnsuperInjector</span><span class="p">(</span><span class="n">Child</span><span class="p">,</span> <span class="n">InjectMe</span><span class="p">):</span> <span class="k">pass</span>
@@ -289,7 +289,7 @@ An ABC cannot be instantiated.</p>
 5
 6
 7
-8</pre></div></td><td class="code"><div class="highlight"><pre>&gt;&gt;&gt; o = UnsuperInjector()
+8</pre></div></td><td class="code"><div class="highlight"><pre><span></span>&gt;&gt;&gt; o = UnsuperInjector()
 Child.__init__(self) called
 SomeBaseClass.__init__(self) called
 
@@ -353,6 +353,11 @@ Using <code>super</code>, we can inject a class (<code>InjectMe</code>) between 
             <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Recent Posts</span></h4>
                 <ul class="list-group" id="recentposts">
                     <li class="list-group-item">
+                        <a href="http://tdeboissiere.github.io/h5py-vs-npz.html">
+                            h5py vs npz
+                        </a>
+                    </li>
+                    <li class="list-group-item">
                         <a href="http://tdeboissiere.github.io/aws-part-3-installing-python-and-custom-ami.html">
                             AWS Part 3 : Installing python and custom AMI
                         </a>
@@ -377,6 +382,11 @@ Using <code>super</code>, we can inject a class (<code>InjectMe</code>) between 
                             <i class="fa fa-folder-open fa-lg"></i> AWS
                         </a>
                     </li>
+                    <li class="list-group-item">
+                        <a href="http://tdeboissiere.github.io/category/python.html">
+                            <i class="fa fa-folder-open fa-lg"></i> Python
+                        </a>
+                    </li>
                 </ul>
             </li>
 
@@ -385,6 +395,16 @@ Using <code>super</code>, we can inject a class (<code>InjectMe</code>) between 
                     <li class="list-group-item tag-1">
                         <a href="http://tdeboissiere.github.io/tag/aws.html">
                             AWS
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="http://tdeboissiere.github.io/tag/h5py.html">
+                            h5py
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="http://tdeboissiere.github.io/tag/numpy.html">
+                            numpy
                         </a>
                     </li>
                 </ul>

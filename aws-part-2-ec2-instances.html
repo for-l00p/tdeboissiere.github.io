@@ -129,73 +129,73 @@ Pony Pony Learn Learn            </a>
 <li>Install Amazon CLI tools.</li>
 </ul>
 <p>Download the tools from this link</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>wget http://s3.amazonaws.com/ec2-downloads/ec2-api-tools.zip
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>wget http://s3.amazonaws.com/ec2-downloads/ec2-api-tools.zip
 </pre></div>
 </td></tr></table>
 
 <p>And unzip in a suitable directory</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2</pre></div></td><td class="code"><div class="highlight"><pre>sudo mkdir /usr/local/ec2
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span>sudo mkdir /usr/local/ec2
 sudo unzip ec2-api-tools.zip -d /usr/local/ec2
 </pre></div>
 </td></tr></table>
 
 <h2>Install and configure JAVA</h2>
 <p>The Amazon EC2 CLI tools require Java. You can check Java is installed by running </p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>which java
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>which java
 </pre></div>
 </td></tr></table>
 
 <p>which should yield something like :</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>/usr/bin/java
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>/usr/bin/java
 </pre></div>
 </td></tr></table>
 
 <p>If that is not the case, install java as indicated <a href="http://askubuntu.com/questions/521145/how-to-install-oracle-java-on-ubuntu-14-04">here</a>.</p>
 <p>We now need to find the Java home directory. The which command we executed earlier returns Java's location in the $PATH environment variable but most of the time, it's a symbolic link.</p>
 <p>You can check this by running :</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>file $(which java)
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>file $(which java)
 </pre></div>
 </td></tr></table>
 
 <p>which in my case returns :</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>/usr/bin/java: symbolic link to `/etc/alternatives/java&#39;
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>/usr/bin/java: symbolic link to `/etc/alternatives/java&#39;
 </pre></div>
 </td></tr></table>
 
 <p>by iterating the file command, you can find the true java home directory :</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2</pre></div></td><td class="code"><div class="highlight"><pre>file /etc/alternatives/java
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span>file /etc/alternatives/java
 &gt; /etc/alternatives/java: symbolic link to `/usr/lib/jvm/java-8-oracle/jre/bin/java&#39;
 </pre></div>
 </td></tr></table>
 
 <p>the last location is the actual binary, which you can check by running :</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2</pre></div></td><td class="code"><div class="highlight"><pre>file /usr/lib/jvm/java-8-oracle/jre/bin/java
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span>file /usr/lib/jvm/java-8-oracle/jre/bin/java
 &gt; /usr/lib/jvm/java-8-oracle/jre/bin/java: ELF 64-bit LSB  executable
 </pre></div>
 </td></tr></table>
 
 <p>In this example, the java home directory is :</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>/usr/lib/jvm/java-8-oracle/jre/
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>/usr/lib/jvm/java-8-oracle/jre/
 </pre></div>
 </td></tr></table>
 
 <p>We are now going to set the JAVA_HOME variable to the home directory we identified :</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>export JAVA_HOME=&quot;/usr/lib/jvm/java-8-oracle/jre/&quot;
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>export JAVA_HOME=&quot;/usr/lib/jvm/java-8-oracle/jre/&quot;
 </pre></div>
 </td></tr></table>
 
 <p>To check this has been set correctly, use :</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="p">$</span><span class="nv">JAVA_HOME</span><span class="x">/bin/java -version</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="p">$</span><span class="nv">JAVA_HOME</span><span class="x">/bin/java -version</span>
 </pre></div>
 </td></tr></table>
 
 <p>which should get you :</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
-3</pre></div></td><td class="code"><div class="highlight"><pre>java version &quot;1.8.0_66&quot;
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span>java version &quot;1.8.0_66&quot;
 Java(TM) SE Runtime Environment (build 1.8.0_66-b17)
 Java HotSpot(TM) 64-Bit Server VM (build 25.66-b17, mixed mode)
 </pre></div>
@@ -204,17 +204,17 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.66-b17, mixed mode)
 <p>Add this variable definition to your .bashrc so that JAVA_HOME is defined whenever you spawn a new shell.</p>
 <h2>Set the CLI Tools location</h2>
 <p>The Amazon EC2 CLI tools read the <code>EC2_HOME</code> environment variable to locate supporting libraries. Before using these tools, set EC2_HOME to the directory path where you unzipped them. In your .bashrc, write :</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>export EC2_HOME=&quot;/usr/local/ec2/ec2-api-tools-1.7.5.1&quot;
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>export EC2_HOME=&quot;/usr/local/ec2/ec2-api-tools-1.7.5.1&quot;
 </pre></div>
 </td></tr></table>
 
 <p>where the version number are specific to the version you downloaded. To get the right numbers, use :</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>ls /usr/local/ec2
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>ls /usr/local/ec2
 </pre></div>
 </td></tr></table>
 
 <p>We will also add the bin directory for the CLI tools to our system path. </p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span class="x">export PATH=&quot;</span><span class="p">$</span><span class="nv">PATH</span><span class="x">:</span><span class="p">$</span><span class="nv">EC2_HOME</span><span class="x">/bin&quot;</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="x">export PATH=&quot;</span><span class="p">$</span><span class="nv">PATH</span><span class="x">:</span><span class="p">$</span><span class="nv">EC2_HOME</span><span class="x">/bin&quot;</span>
 </pre></div>
 </td></tr></table>
 
@@ -222,13 +222,13 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.66-b17, mixed mode)
 <p>Your access keys identify you to the Amazon EC2 CLI tools. There are two types of access keys: access key IDs (for example, AKIAIOSFODNN7EXAMPLE) and secret access keys (for example, wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY). You should have stored your access keys in a safe place when you received them. </p>
 <p>We will set the following environment variable which will serve as default values for the access and secret keys. This will save you from entering your keys for each command.</p>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2</pre></div></td><td class="code"><div class="highlight"><pre>export AWS_ACCESS_KEY=your-aws-access-key-id 
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span>export AWS_ACCESS_KEY=your-aws-access-key-id 
 export AWS_SECRET_KEY=your-aws-secret-key
 </pre></div>
 </td></tr></table>
 
 <p>We can check that the keys have been properly set</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>ec2-describe-regions
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>ec2-describe-regions
 </pre></div>
 </td></tr></table>
 
@@ -241,7 +241,7 @@ export AWS_SECRET_KEY=your-aws-secret-key
 6
 7
 8
-9</pre></div></td><td class="code"><div class="highlight"><pre>&gt;REGION eu-west-1   ec2.eu-west-1.amazonaws.com
+9</pre></div></td><td class="code"><div class="highlight"><pre><span></span>&gt;REGION eu-west-1   ec2.eu-west-1.amazonaws.com
 &gt;REGION ap-southeast-1  ec2.ap-southeast-1.amazonaws.com
 &gt;REGION ap-southeast-2  ec2.ap-southeast-2.amazonaws.com
 &gt;REGION eu-central-1    ec2.eu-central-1.amazonaws.com
@@ -256,7 +256,7 @@ export AWS_SECRET_KEY=your-aws-secret-key
 <h2>Change the region (if needed)</h2>
 <p>The default EC2 CLI region is US East (us-east-1).
 To change this region, you need to set the following environment variable</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>export EC2_URL=https://&lt;service_endpoint&gt;
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>export EC2_URL=https://&lt;service_endpoint&gt;
 </pre></div>
 </td></tr></table>
 
@@ -265,17 +265,17 @@ To change this region, you need to set the following environment variable</p>
 <p>In a terminal, go to the location of the private key file (.pem) used when launching the instance.
 In a command line shell, change directories to the location of the private key file that you created when you launched the instance.</p>
 <p>The SSH command should be something like :</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>ssh -i /path/my-key-pair.pem user_name@public_dns_name
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>ssh -i /path/my-key-pair.pem user_name@public_dns_name
 </pre></div>
 </td></tr></table>
 
 <p>where use name is <code>ubuntu</code> for an ubuntu AMI and the public dns name is specified in the AWS console. Alternatively, the dns name can be found using </p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>ec2-describe-instances
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>ec2-describe-instances
 </pre></div>
 </td></tr></table>
 
 <p>For instance :</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>ssh -i /path/my-key-pair.pem ubuntu@ec2-52-62-114-212.ap-southeast-2.compute.amazonaws.com
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>ssh -i /path/my-key-pair.pem ubuntu@ec2-52-62-114-212.ap-southeast-2.compute.amazonaws.com
 </pre></div>
 </td></tr></table>
 
@@ -306,7 +306,7 @@ In a command line shell, change directories to the location of the private key f
 23
 24
 25
-26</pre></div></td><td class="code"><div class="highlight"><pre>Welcome to Ubuntu 14.04.2 LTS (GNU/Linux 3.13.0-48-generic x86_64)
+26</pre></div></td><td class="code"><div class="highlight"><pre><span></span>Welcome to Ubuntu 14.04.2 LTS (GNU/Linux 3.13.0-48-generic x86_64)
 
  * Documentation:  https://help.ubuntu.com/
 
@@ -337,7 +337,7 @@ applicable law.
 
 <p>Congrats, you are now connected !</p>
 <p>You can transfer files easily with the scp command :</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre>scp -i /path/my-key-pair.pem myfile ubuntu@ec2-52-62-114-212.ap-southeast-2.compute.amazonaws.com:~
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>scp -i /path/my-key-pair.pem myfile ubuntu@ec2-52-62-114-212.ap-southeast-2.compute.amazonaws.com:~
 </pre></div>
 </td></tr></table>
 
@@ -409,6 +409,11 @@ applicable law.
             <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Recent Posts</span></h4>
                 <ul class="list-group" id="recentposts">
                     <li class="list-group-item">
+                        <a href="http://tdeboissiere.github.io/h5py-vs-npz.html">
+                            h5py vs npz
+                        </a>
+                    </li>
+                    <li class="list-group-item">
                         <a href="http://tdeboissiere.github.io/aws-part-3-installing-python-and-custom-ami.html">
                             AWS Part 3 : Installing python and custom AMI
                         </a>
@@ -433,6 +438,11 @@ applicable law.
                             <i class="fa fa-folder-open fa-lg"></i> AWS
                         </a>
                     </li>
+                    <li class="list-group-item">
+                        <a href="http://tdeboissiere.github.io/category/python.html">
+                            <i class="fa fa-folder-open fa-lg"></i> Python
+                        </a>
+                    </li>
                 </ul>
             </li>
 
@@ -441,6 +451,16 @@ applicable law.
                     <li class="list-group-item tag-1">
                         <a href="http://tdeboissiere.github.io/tag/aws.html">
                             AWS
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="http://tdeboissiere.github.io/tag/h5py.html">
+                            h5py
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="http://tdeboissiere.github.io/tag/numpy.html">
+                            numpy
                         </a>
                     </li>
                 </ul>
