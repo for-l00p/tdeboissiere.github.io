@@ -183,7 +183,8 @@ npy time: 0.483348703384
 &lt;/pre&gt;&lt;/div&gt;
 &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 
-&lt;p&gt;Which is even faster than the &lt;code&gt;.npy&lt;/code&gt; version !&lt;/p&gt;</summary><category term="numpy"></category><category term="h5py"></category></entry><entry><title>AWS Part 3 : Installing python and custom AMI</title><link href="http://tdeboissiere.github.io/aws-part-3-installing-python-and-custom-ami.html" rel="alternate"></link><published>2016-01-04T00:00:00+11:00</published><author><name>TDB</name></author><id>tag:tdeboissiere.github.io,2016-01-04:aws-part-3-installing-python-and-custom-ami.html</id><summary type="html">&lt;h1&gt;1. Launch an Amazon instance&lt;/h1&gt;
+&lt;p&gt;Which is even faster than the &lt;code&gt;.npy&lt;/code&gt; version !&lt;/p&gt;
+&lt;p&gt;Later on, I'll try to give more details on my data pipeline.&lt;/p&gt;</summary><category term="numpy"></category><category term="h5py"></category></entry><entry><title>AWS Part 3 : Installing python and custom AMI</title><link href="http://tdeboissiere.github.io/aws-part-3-installing-python-and-custom-ami.html" rel="alternate"></link><published>2016-01-04T00:00:00+11:00</published><author><name>TDB</name></author><id>tag:tdeboissiere.github.io,2016-01-04:aws-part-3-installing-python-and-custom-ami.html</id><summary type="html">&lt;h1&gt;1. Launch an Amazon instance&lt;/h1&gt;
 &lt;p&gt;Launch an Amazon instance corresponding to your needs.
 For more information, check &lt;a href="../AWS tutorial part 1"&gt;AWS Part 1&lt;/a&gt;.&lt;/p&gt;
 &lt;h1&gt;2. Install python software&lt;/h1&gt;

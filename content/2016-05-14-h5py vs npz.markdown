@@ -135,3 +135,5 @@ This gave me:
 	hdf5 time: 0.386118304729
 
 Which is even faster than the `.npy` version !
+
+Later on, I'll try to give more details on my data pipeline.
