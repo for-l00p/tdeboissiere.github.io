@@ -1,0 +1,137 @@
+Title: h5py vs npz
+Date: 2016-01-06
+Category: Python
+Tags: numpy, h5py
+Author: TDB
+Summary: Speed improvements to read organised collection of arrays
+
+# Data engineering for computer vision
+
+Lately, I've been thinking hard about the best way to organize my data before feeding it to a machine learning classifier or regressor. 
+I have a few guiding principles in mind:
+
+- Keep the number of data files to a minimum
+- Ease common operations (train test split, class selection)
+- Make sure loading the data is not a bottleneck
+
+I first started with the [numpy savez function](http://docs.scipy.org/doc/numpy-1.10.0/reference/generated/numpy.savez.html) which allows you to save the data in an ordered way. This would typically go as
+
+```python
+import numpy as np
+
+# Assume you have a train and test array and labels:
+arr_train, label_train
+arr_test, label_test
+
+# Define a dict
+d = {"arr_train": arr_train,
+     "arr_test": arr_test,
+     "label_train": label_train,
+     "label_test": label_test}
+
+np.savez("data.npz", **d)
+```
+
+Which works just fine.
+
+However, two limitations quickly became apparent:
+
+- When you need to store a lot of metadata it quickly becomes a pain to organize.
+- Loading the data from the disk is actually quite slow (see snippet below).
+
+```python
+
+import numpy as np
+import time
+
+arr = np.random.randint(0,1000,(25000,5000))
+np.savez("arr.npz", **{"arr": arr})
+np.save("arr.npy", arr)
+
+ltime = []
+for i in range(20):
+    start = time.time()
+    arr = np.load("arr.npy")[:, :]
+    ltime.append(time.time() - start)
+
+print "npy time:", np.mean(ltime)
+
+ltime = []
+for i in range(20):
+    start = time.time()
+    arr = np.load("arr.npz")["arr"][:, :]
+    ltime.append(time.time() - start)
+
+print "npz time:", np.mean(ltime)
+
+```
+
+which gave me the following times:
+
+	npz time: 1.47687283754
+	npy time: 0.483348703384
+
+
+That's quite the difference !
+
+Clearly, another approach is needed. So far, I have settled with the excellent and simple [h5py module](http://docs.h5py.org/en/latest/index.html) which stores the data in HDF5 format while being very transparent to numpy.
+
+Here's how it goes:
+
+```python
+import h5py
+import numpy as np
+import time
+
+arr = np.random.randint(0,1000,(25000,5000))
+
+with h5py.File("arr.h5", "w") as hf:
+    hf.create_dataset("arr", data=arr)
+```
+
+And that's it !
+
+You can also easily add metadata to each of your datasets:
+
+```python
+import h5py
+import numpy as np
+import time
+
+arr = np.random.randint(0,1000,(25000,5000))
+
+with h5py.File("arr.h5", "w") as hf:
+    dset = hf.create_dataset("arr", data=arr)
+    dset.attrs['author'] = "pony"
+```
+
+My only gripe with the module was an ill-fated attempt at writing a file in parallel from several sources: you need to rebuild h5py to support parallelism (my anaconda distribution did not support it by default) and this takes you to a world of pain with conflicts between anaconda's own HDF5 library and the new parallel one you build. The only workaround I found involved reinstalling h5py outside of anaconda but messed with my MPI setup.
+
+Anyway, let's test the speed of this new design:
+
+```python
+import h5py
+import numpy as np
+import time
+
+arr = np.random.randint(0,1000,(25000,5000))
+
+with h5py.File("arr.h5", "w") as hf:
+    dset = hf.create_dataset("arr", data=arr)
+    dset.attrs['author'] = "pony"
+
+ltime = []
+for i in range(20):
+    start = time.time()
+    with h5py.File("arr.h5", "r") as hf:
+        arr = hf["arr"][:, :]
+        ltime.append(time.time() - start)
+
+print "hdf5 time:", np.mean(ltime)
+```
+
+This gave me:
+
+	hdf5 time: 0.386118304729
+
+Which is even faster than the `.npy` version !
