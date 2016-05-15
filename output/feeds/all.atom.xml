@@ -1,5 +1,559 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Pony Pony Learn Learn</title><link href="http://tdeboissiere.github.io/" rel="alternate"></link><link href="http://tdeboissiere.github.io/feeds/all.atom.xml" rel="self"></link><id>http://tdeboissiere.github.io/</id><updated>2016-05-14T00:00:00+10:00</updated><entry><title>h5py vs npz</title><link href="http://tdeboissiere.github.io/h5py-vs-npz.html" rel="alternate"></link><published>2016-05-14T00:00:00+10:00</published><author><name>TDB</name></author><id>tag:tdeboissiere.github.io,2016-05-14:h5py-vs-npz.html</id><summary type="html">&lt;h1&gt;Data engineering for computer vision&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Pony Pony Learn Learn</title><link href="http://tdeboissiere.github.io/" rel="alternate"></link><link href="http://tdeboissiere.github.io/feeds/all.atom.xml" rel="self"></link><id>http://tdeboissiere.github.io/</id><updated>2016-05-15T00:00:00+10:00</updated><entry><title>Deep Learning Setup</title><link href="http://tdeboissiere.github.io/deep-learning-setup.html" rel="alternate"></link><published>2016-05-15T00:00:00+10:00</published><author><name>TDB</name></author><id>tag:tdeboissiere.github.io,2016-05-15:deep-learning-setup.html</id><summary type="html">&lt;p&gt;hese instructions are for Linux (Ubuntu) based but should be adaptable to other distros without too much work&lt;/p&gt;
+&lt;h1&gt;First make sure Ubuntu is up to date&lt;/h1&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3
+4&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo apt-get update  
+sudo apt-get upgrade  
+sudo apt-get install build-essential  
+sudo apt-get autoremove
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h1&gt;Install gfortran (to compile OpenBlas)&lt;/h1&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo apt-get install gfortran
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h1&gt;Configure OpenBlas for fast linear algebra operations&lt;/h1&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3
+4
+5&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;cd git  
+git clone https://github.com/xianyi/OpenBLAS  
+cd OpenBLAS  
+make FC=gfortran  
+sudo make PREFIX=/usr/local install
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h1&gt;The tricky bit: getting your GPU up and running&lt;/h1&gt;
+&lt;h3&gt;First verify your GPU is nVidia compatible&lt;/h3&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;lspci | grep -i nvidia
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;You should see something like&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="mi"&gt;03&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mf"&gt;00.0&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="n"&gt;D&lt;/span&gt; &lt;span class="n"&gt;controller&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;NVIDIA&lt;/span&gt; &lt;span class="n"&gt;Corporation&lt;/span&gt; &lt;span class="n"&gt;GM108M&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;GeForce&lt;/span&gt; &lt;span class="mi"&gt;830&lt;/span&gt;&lt;span class="n"&gt;M&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rev&lt;/span&gt; &lt;span class="n"&gt;ff&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;In my case, a GeForce 830M which is CUDA compatible: perfect !&lt;/p&gt;
+&lt;p&gt;Next we should make sure the drivers are up to date:&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo add-apt-repository ppa:graphics-drivers/ppa
+sudo apt-get update
+sudo apt-get install nvidia-352
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;This is the official repository which should be safe to add to your PPA list. There are newer drivers but this one is the recommended one. Restart your system afterwards.&lt;/p&gt;
+&lt;p&gt;Next step: configuring CUDA&lt;/p&gt;
+&lt;h3&gt;Install cuda&lt;/h3&gt;
+&lt;p&gt;Go to &lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;https://developer.nvidia.com/cuda-downloads
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;Select distribution and follow the instructions in the guide to set up CUDA. The guide is long because it deals with multiple Unix distributions. The core instructions are actually pretty limited.&lt;/p&gt;
+&lt;p&gt;Points you should pay attention to:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;For some Unix distributions it is crucial to disable the nouveau drivers which may conflict with the nVidia ones.&lt;/li&gt;
+&lt;li&gt;Make sure to add CUDA to your &lt;code&gt;.bashrc&lt;/code&gt; or &lt;code&gt;.zshrc&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The instructions for the last point are in the guide but let's paste them here for completeness:&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="x"&gt;echo &amp;#39;export PATH=/usr/local/cuda/bin:&lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;PATH&lt;/span&gt;&lt;span class="x"&gt;&amp;#39; &amp;gt;&amp;gt; ~/.bashrc&lt;/span&gt;
+&lt;span class="x"&gt;echo &amp;#39;export LD_LIBRARY_PATH=/usr/local/cuda/lib64:&lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;LD_LIBRARY_PATH&lt;/span&gt;&lt;span class="x"&gt;&amp;#39; &amp;gt;&amp;gt; ~/.bashrc&lt;/span&gt;
+&lt;span class="x"&gt;source ~/.bashrc&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;The guide also gives you the opportunity to test your CUDA installation by compiling some examples. Compile them with:&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;/usr/local/cuda/bin/cuda-install-samples-7.5.sh ~/cuda-samples
+cd ~/cuda-samples/NVIDIA*Samples
+make -j $(($(nproc) + 1))
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;The $(($(nproc) + 1)) statement uses all the available cores on your machines to compile faster.&lt;/p&gt;
+&lt;p&gt;Next step is to install CuDNN.&lt;/p&gt;
+&lt;h3&gt;Install CUDNN&lt;/h3&gt;
+&lt;p&gt;Go to &lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;https://developer.nvidia.com/cudnn
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;Register, download and extract files
+Currently (Apr 2016), theano is not up to date with the latest cuda (cudnn v5) so for now, use cudnn v4.&lt;/p&gt;
+&lt;p&gt;A &lt;code&gt;&amp;lt;extractionpath&amp;gt;/cuda&lt;/code&gt; is created
+Copy the contents of the /cuda folder to your cuda installation repository
+On Ubuntum this should be :&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;cd &amp;lt;extractionpath&amp;gt;cuda
+sudo cp lib64/* /usr/local/cuda/lib64/
+sudo cp include/cudnn.h /usr/local/cuda/include/
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;If everything's working fine, you can move on to the next step: configuring python for scientific computing.&lt;/p&gt;
+&lt;h1&gt;Configure python&lt;/h1&gt;
+&lt;h3&gt;Download anaconda&lt;/h3&gt;
+&lt;p&gt;The Anaconda distribution has most libraries of interest and can super easily be set up on Linux, Windows and Mac:&lt;/p&gt;
+&lt;p&gt;Go to &lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;https://www.continuum.io/downloads
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;Download the binaries and run&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;bash Anaconda-x.y.z-Linux-x86_64.sh (Linux)
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h3&gt;Install pip&lt;/h3&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;conda install pip
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h3&gt;Install the optional pydot&lt;/h3&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install pydot
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;You may have to change your version of pyparser if you get an error message.&lt;/p&gt;
+&lt;p&gt;Now let's move on to deep learning libraries. We'll start with theano.&lt;/p&gt;
+&lt;h1&gt;Theano installation&lt;/h1&gt;
+&lt;h3&gt;Install bleeding edge theano&lt;/h3&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install --upgrade --no-deps git+git://github.com/Theano/Theano.git
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h3&gt;Configure theano with a .theanorc file&lt;/h3&gt;
+&lt;p&gt;In your home directory, create a &lt;code&gt;.theanorc&lt;/code&gt; file in which you'll put the following:&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt; 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[global]&lt;/span&gt;
+&lt;span class="na"&gt;device&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;gpu  &lt;/span&gt;
+&lt;span class="na"&gt;floatX&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;float32&lt;/span&gt;
+
+&lt;span class="k"&gt;[blas]&lt;/span&gt;
+&lt;span class="na"&gt;ldflags&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;-L/usr/local/lib -lopenblas&lt;/span&gt;
+
+&lt;span class="k"&gt;[nvcc]&lt;/span&gt;
+&lt;span class="na"&gt;fastmath&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;True&lt;/span&gt;
+
+&lt;span class="k"&gt;[cuda]&lt;/span&gt;
+&lt;span class="na"&gt;root&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;/usr/lib/nvidia-cuda-toolkit&lt;/span&gt;
+
+&lt;span class="k"&gt;[dnn.conv]&lt;/span&gt;
+&lt;span class="na"&gt;algo_bwd_filter&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;deterministic&lt;/span&gt;
+&lt;span class="na"&gt;algo_bwd_data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;deterministic&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;The last flag may slow down the computations but allows deterministic results. To get faster convolutions, you should set it to:&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[dnn.conv]&lt;/span&gt;
+&lt;span class="na"&gt;algo_fwd&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;time_once&lt;/span&gt;
+&lt;span class="na"&gt;algo_bwd_data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;time_once&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h3&gt;Check theano sees cudnn&lt;/h3&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3
+4
+5
+6
+7&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;theano.sandbox.cuda.dnn&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
+&lt;span class="n"&gt;Using&lt;/span&gt; &lt;span class="n"&gt;gpu&lt;/span&gt; &lt;span class="n"&gt;device&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Quadro&lt;/span&gt; &lt;span class="n"&gt;K620&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;CNMeM&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="n"&gt;disabled&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;CuDNN&lt;/span&gt; &lt;span class="mi"&gt;4007&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="n"&gt;dnn_available&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="bp"&gt;True&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="n"&gt;dnn_available&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;msg&lt;/span&gt;
+&lt;span class="bp"&gt;None&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h3&gt;Theano test script&lt;/h3&gt;
+&lt;p&gt;Run this script to make sure theano can use the GPU/CPU normally&lt;/p&gt;
+&lt;p&gt;```python
+from theano import function, config, shared, sandbox&lt;br /&gt;
+import theano.tensor as T&lt;br /&gt;
+import numpy&lt;br /&gt;
+import time&lt;/p&gt;
+&lt;p&gt;vlen = 10 * 30 * 768  # 10 x #cores x # threads per core&lt;br /&gt;
+iters = 1000&lt;/p&gt;
+&lt;p&gt;rng = numpy.random.RandomState(22)&lt;br /&gt;
+x = shared(numpy.asarray(rng.rand(vlen), config.floatX))&lt;br /&gt;
+f = function([], T.exp(x))&lt;br /&gt;
+print f.maker.fgraph.toposort()&lt;br /&gt;
+t0 = time.time()&lt;br /&gt;
+for i in xrange(iters):&lt;br /&gt;
+    r = f()
+t1 = time.time()&lt;br /&gt;
+print 'Looping %d times took' % iters, t1 - t0, 'seconds'&lt;br /&gt;
+print 'Result is', r&lt;br /&gt;
+if numpy.any([isinstance(x.op, T.Elemwise) for x in f.maker.fgraph.toposort()]):&lt;br /&gt;
+    print 'Used the cpu'
+else:&lt;br /&gt;
+    print 'Used the gpu'&lt;/p&gt;
+&lt;h3&gt;You can enable CNMeM with&lt;/h3&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;[lib]&lt;/span&gt;
+&lt;span class="na"&gt;cnmem&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;0.01&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;in the &lt;code&gt;.theanorc&lt;/code&gt; file&lt;/p&gt;
+&lt;p&gt;The value represents the start size (either in MB or the fraction of total GPU memory) of the memory pool. If more memory is needed, Theano will try to obtain more, but this can cause memory fragmentation.&lt;/p&gt;
+&lt;h3&gt;Check speed of theano/OpenBlas&lt;/h3&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;python&lt;/span&gt; &lt;span class="sb"&gt;`python -c &amp;quot;import os, theano; print os.path.dirname(theano.__file__)&amp;quot;`&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;misc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;check_blas&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;py&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;This will run some tests ans you can compare the speed of your setup with different reference setups&lt;/p&gt;
+&lt;h3&gt;Run some tests (optional and very slow...)&lt;/h3&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;NumPy&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;import numpy; numpy.test()&amp;quot;&lt;/span&gt;
+&lt;span class="n"&gt;SciPy&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;import scipy; scipy.test()&amp;quot;&lt;/span&gt;
+&lt;span class="n"&gt;Theano&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="mi"&gt;30&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;import theano; theano.test()&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h3&gt;In case of an error message dealing with theano cache:&lt;/h3&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="x"&gt;rm -rf &lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;HOME&lt;/span&gt;&lt;span class="x"&gt;/.theano&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;Now let's setup Caffe, which is somewhat more involved&lt;/p&gt;
+&lt;h1&gt;Caffe installation&lt;/h1&gt;
+&lt;h3&gt;General dependencies&lt;/h3&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo apt-get install libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libhdf5-serial-dev protobuf-compiler
+sudo apt-get install --no-install-recommends libboost-all-dev
+sudo apt-get install libgflags-dev libgoogle-glog-dev liblmdb-dev
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;If an error is thrown with the boost library do :&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3
+4
+5
+6&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;sudo apt-get --purge remove libboost-all-dev libboost-dev libboost-doc
+sudo apt-get install -f
+sudo dpkg --configure -a
+sudo apt-get clean
+sudo apt-get update
+sudo apt-get install libboost1.54-dev
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;Then relaunch the commands to install general dependencies&lt;/p&gt;
+&lt;h3&gt;Get caffe&lt;/h3&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3
+4&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;git clone https://github.com/BVLC/caffe.git
+
+cp Makefile.config.example Makefile.config
+# Adjust Makefile.config (for example, if using Anaconda Python, or if cuDNN is desired example at the end of this post)
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;You should especially pay attention to the anaconda part, the opencv part, the use CUDNN part.
+If you have openblas installed, replace &lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;Blas := atlas to
+BLAS := open
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;Then:&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3
+4&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;make all -j $(($(nproc) + 1))
+make pycaffe -j $(($(nproc) + 1))
+make test -j $(($(nproc) + 1))
+make runtest -j $(($(nproc) + 1))
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;More often than not, you may run into errors during comilation. Here are a few gotchas I've dealt with:&lt;/p&gt;
+&lt;h3&gt;Conflict with HDF5&lt;/h3&gt;
+&lt;p&gt;Add anaconda2 to the lib path to link the proper hdf5 library. Also add the &lt;code&gt;x86_64-linux-gnu&lt;/code&gt; path.
+In your &lt;code&gt;.bashrc&lt;/code&gt;:&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1
+2
+3&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="x"&gt;export LD_LIBRARY_PATH=&lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;LD_LIBRARY_PATH&lt;/span&gt;&lt;span class="x"&gt;:/home/tmain/anaconda2/lib&lt;/span&gt;
+&lt;span class="x"&gt;export LD_LIBRARY_PATH=/lib/x86_64-linux-gnu:&lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;LD_LIBRARY_PATH&lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
+&lt;span class="x"&gt;export PYTHONPATH=~/caffe/python:&lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;PYTHONPATH&lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h3&gt;Getting pycaffe to work :&lt;/h3&gt;
+&lt;p&gt;In the folder &lt;code&gt;caffe/python&lt;/code&gt; install all the requirements&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="x"&gt;for req in &lt;/span&gt;&lt;span class="p"&gt;$(&lt;/span&gt;&lt;span class="err"&gt;cat&lt;/span&gt; &lt;span class="err"&gt;requirements.txt&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="x"&gt;; do pip install &lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;req&lt;/span&gt;&lt;span class="x"&gt;; done&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;p&gt;Then export python path :
+In your &lt;code&gt;.basrhc&lt;/code&gt; file :&lt;/p&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;1&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="x"&gt;export PYTHONPATH=&amp;lt;caffe-home&amp;gt;/python:&lt;/span&gt;&lt;span class="p"&gt;$&lt;/span&gt;&lt;span class="nv"&gt;PYTHONPATH&lt;/span&gt;&lt;span class="x"&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
+&lt;h3&gt;My Makefile.config for Caffe&lt;/h3&gt;
+&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c"&gt;## Refer to http://caffe.berkeleyvision.org/installation.html&lt;/span&gt;
+&lt;span class="c"&gt;# Contributions simplifying and improving our build system are welcome!&lt;/span&gt;
+
+&lt;span class="c"&gt;# cuDNN acceleration switch (uncomment to build with cuDNN).&lt;/span&gt;
+&lt;span class="nv"&gt;USE_CUDNN&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; 1
+
+&lt;span class="c"&gt;# CPU-only switch (uncomment to build without GPU support).&lt;/span&gt;
+&lt;span class="c"&gt;# CPU_ONLY := 1&lt;/span&gt;
+
+&lt;span class="c"&gt;# uncomment to disable IO dependencies and corresponding data layers&lt;/span&gt;
+&lt;span class="c"&gt;# USE_OPENCV := 0&lt;/span&gt;
+&lt;span class="c"&gt;# USE_LEVELDB := 0&lt;/span&gt;
+&lt;span class="c"&gt;# USE_LMDB := 0&lt;/span&gt;
+
+&lt;span class="c"&gt;# uncomment to allow MDB_NOLOCK when reading LMDB files (only if necessary)&lt;/span&gt;
+&lt;span class="c"&gt;#   You should not set this flag if you will be reading LMDBs with any&lt;/span&gt;
+&lt;span class="c"&gt;#   possibility of simultaneous read and write&lt;/span&gt;
+&lt;span class="c"&gt;# ALLOW_LMDB_NOLOCK := 1&lt;/span&gt;
+
+&lt;span class="c"&gt;# Uncomment if you&amp;#39;re using OpenCV 3&lt;/span&gt;
+&lt;span class="nv"&gt;OPENCV_VERSION&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; 3
+
+&lt;span class="c"&gt;# To customize your choice of compiler, uncomment and set the following.&lt;/span&gt;
+&lt;span class="c"&gt;# N.B. the default for Linux is g++ and the default for OSX is clang++&lt;/span&gt;
+&lt;span class="c"&gt;# CUSTOM_CXX := g++&lt;/span&gt;
+
+&lt;span class="c"&gt;# CUDA directory contains bin/ and lib/ directories that we need.&lt;/span&gt;
+&lt;span class="nv"&gt;CUDA_DIR&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; /usr/local/cuda
+&lt;span class="c"&gt;# On Ubuntu 14.04, if cuda tools are installed via&lt;/span&gt;
+&lt;span class="c"&gt;# &amp;quot;sudo apt-get install nvidia-cuda-toolkit&amp;quot; then use this instead:&lt;/span&gt;
+&lt;span class="c"&gt;# CUDA_DIR := /usr&lt;/span&gt;
+
+&lt;span class="c"&gt;# CUDA architecture setting: going with all of them.&lt;/span&gt;
+&lt;span class="c"&gt;# For CUDA &amp;lt; 6.0, comment the *_50 lines for compatibility.&lt;/span&gt;
+&lt;span class="nv"&gt;CUDA_ARCH&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; -gencode &lt;span class="nv"&gt;arch&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;compute_20,code&lt;span class="o"&gt;=&lt;/span&gt;sm_20 &lt;span class="se"&gt;\&lt;/span&gt;
+            -gencode &lt;span class="nv"&gt;arch&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;compute_20,code&lt;span class="o"&gt;=&lt;/span&gt;sm_21 &lt;span class="se"&gt;\&lt;/span&gt;
+            -gencode &lt;span class="nv"&gt;arch&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;compute_30,code&lt;span class="o"&gt;=&lt;/span&gt;sm_30 &lt;span class="se"&gt;\&lt;/span&gt;
+            -gencode &lt;span class="nv"&gt;arch&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;compute_35,code&lt;span class="o"&gt;=&lt;/span&gt;sm_35 &lt;span class="se"&gt;\&lt;/span&gt;
+            -gencode &lt;span class="nv"&gt;arch&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;compute_50,code&lt;span class="o"&gt;=&lt;/span&gt;sm_50 &lt;span class="se"&gt;\&lt;/span&gt;
+            -gencode &lt;span class="nv"&gt;arch&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;compute_50,code&lt;span class="o"&gt;=&lt;/span&gt;compute_50
+
+&lt;span class="c"&gt;# BLAS choice:&lt;/span&gt;
+&lt;span class="c"&gt;# atlas for ATLAS (default)&lt;/span&gt;
+&lt;span class="c"&gt;# mkl for MKL&lt;/span&gt;
+&lt;span class="c"&gt;# open for OpenBlas&lt;/span&gt;
+&lt;span class="nv"&gt;BLAS&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; open
+&lt;span class="c"&gt;# Custom (MKL/ATLAS/OpenBLAS) include and lib directories.&lt;/span&gt;
+&lt;span class="c"&gt;# Leave commented to accept the defaults for your choice of BLAS&lt;/span&gt;
+&lt;span class="c"&gt;# (which should work)!&lt;/span&gt;
+&lt;span class="c"&gt;# BLAS_INCLUDE := /path/to/your/blas&lt;/span&gt;
+&lt;span class="c"&gt;# BLAS_LIB := /path/to/your/blas&lt;/span&gt;
+
+&lt;span class="c"&gt;# Homebrew puts openblas in a directory that is not on the standard search path&lt;/span&gt;
+&lt;span class="c"&gt;# BLAS_INCLUDE := $(shell brew --prefix openblas)/include&lt;/span&gt;
+&lt;span class="c"&gt;# BLAS_LIB := $(shell brew --prefix openblas)/lib&lt;/span&gt;
+
+&lt;span class="c"&gt;# This is required only if you will compile the matlab interface.&lt;/span&gt;
+&lt;span class="c"&gt;# MATLAB directory should contain the mex binary in /bin.&lt;/span&gt;
+&lt;span class="c"&gt;# MATLAB_DIR := /usr/local&lt;/span&gt;
+&lt;span class="c"&gt;# MATLAB_DIR := /Applications/MATLAB_R2012b.app&lt;/span&gt;
+
+&lt;span class="c"&gt;# NOTE: this is required only if you will compile the python interface.&lt;/span&gt;
+&lt;span class="c"&gt;# We need to be able to find Python.h and numpy/arrayobject.h.&lt;/span&gt;
+&lt;span class="c"&gt;# PYTHON_INCLUDE := /usr/include/python2.7 \&lt;/span&gt;
+&lt;span class="c"&gt;#       /usr/lib/python2.7/dist-packages/numpy/core/include&lt;/span&gt;
+&lt;span class="c"&gt;# Anaconda Python distribution is quite popular. Include path:&lt;/span&gt;
+&lt;span class="c"&gt;# Verify anaconda location, sometimes it&amp;#39;s in root.&lt;/span&gt;
+&lt;span class="nv"&gt;ANACONDA_HOME&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;HOME&lt;span class="k"&gt;)&lt;/span&gt;/anaconda2
+&lt;span class="nv"&gt;PYTHON_INCLUDE&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;ANACONDA_HOME&lt;span class="k"&gt;)&lt;/span&gt;/include &lt;span class="se"&gt;\&lt;/span&gt;
+        &lt;span class="k"&gt;$(&lt;/span&gt;ANACONDA_HOME&lt;span class="k"&gt;)&lt;/span&gt;/include/python2.7 &lt;span class="se"&gt;\&lt;/span&gt;
+        &lt;span class="k"&gt;$(&lt;/span&gt;ANACONDA_HOME&lt;span class="k"&gt;)&lt;/span&gt;/lib/python2.7/site-packages/numpy/core/include &lt;span class="se"&gt;\&lt;/span&gt;
+
+&lt;span class="c"&gt;# Uncomment to use Python 3 (default is Python 2)&lt;/span&gt;
+&lt;span class="c"&gt;# PYTHON_LIBRARIES := boost_python3 python3.5m&lt;/span&gt;
+&lt;span class="c"&gt;# PYTHON_INCLUDE := /usr/include/python3.5m \&lt;/span&gt;
+&lt;span class="c"&gt;#                 /usr/lib/python3.5/dist-packages/numpy/core/include&lt;/span&gt;
+
+&lt;span class="c"&gt;# We need to be able to find libpythonX.X.so or .dylib.&lt;/span&gt;
+&lt;span class="c"&gt;# PYTHON_LIB := /usr/lib&lt;/span&gt;
+&lt;span class="nv"&gt;PYTHON_LIB&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt;/home/tmain/anaconda2/lib
+
+&lt;span class="c"&gt;# Homebrew installs numpy in a non standard path (keg only)&lt;/span&gt;
+&lt;span class="c"&gt;# PYTHON_INCLUDE += $(dir $(shell python -c &amp;#39;import numpy.core; print(numpy.core.__file__)&amp;#39;))/include&lt;/span&gt;
+&lt;span class="c"&gt;# PYTHON_LIB += $(shell brew --prefix numpy)/lib&lt;/span&gt;
+
+&lt;span class="c"&gt;# Uncomment to support layers written in Python (will link against Python libs)&lt;/span&gt;
+&lt;span class="nv"&gt;WITH_PYTHON_LAYER&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; 1
+
+&lt;span class="c"&gt;# Whatever else you find you need goes here.&lt;/span&gt;
+&lt;span class="nv"&gt;INCLUDE_DIRS&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;PYTHON_INCLUDE&lt;span class="k"&gt;)&lt;/span&gt; /usr/local/include
+&lt;span class="nv"&gt;LIBRARY_DIRS&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;PYTHON_LIB&lt;span class="k"&gt;)&lt;/span&gt; /usr/local/lib /usr/lib
+
+&lt;span class="c"&gt;# If Homebrew is installed at a non standard location (for example your home directory) and you use it for general dependencies&lt;/span&gt;
+&lt;span class="c"&gt;# INCLUDE_DIRS += $(shell brew --prefix)/include&lt;/span&gt;
+&lt;span class="c"&gt;# LIBRARY_DIRS += $(shell brew --prefix)/lib&lt;/span&gt;
+
+&lt;span class="c"&gt;# Uncomment to use `pkg-config` to specify OpenCV library paths.&lt;/span&gt;
+&lt;span class="c"&gt;# (Usually not necessary -- OpenCV libraries are normally installed in one of the above $LIBRARY_DIRS.)&lt;/span&gt;
+&lt;span class="c"&gt;# USE_PKG_CONFIG := 1&lt;/span&gt;
+
+&lt;span class="nv"&gt;BUILD_DIR&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; build
+&lt;span class="nv"&gt;DISTRIBUTE_DIR&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; distribute
+
+&lt;span class="c"&gt;# Uncomment for debugging. Does not work on OSX due to https://github.com/BVLC/caffe/issues/171&lt;/span&gt;
+&lt;span class="c"&gt;# DEBUG := 1&lt;/span&gt;
+
+&lt;span class="c"&gt;# The ID of the GPU that &amp;#39;make runtest&amp;#39; will use to run unit tests.&lt;/span&gt;
+&lt;span class="nv"&gt;TEST_GPUID&lt;/span&gt; &lt;span class="o"&gt;:=&lt;/span&gt; 0
+
+&lt;span class="c"&gt;# enable pretty build (comment to see full commands)&lt;/span&gt;
+&lt;span class="nv"&gt;Q&lt;/span&gt; &lt;span class="o"&gt;?=&lt;/span&gt; @
+&lt;/pre&gt;&lt;/div&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;</summary><category term="python"></category><category term="cuda"></category><category term="theano"></category><category term="caffe"></category></entry><entry><title>h5py vs npz</title><link href="http://tdeboissiere.github.io/h5py-vs-npz.html" rel="alternate"></link><published>2016-05-14T00:00:00+10:00</published><author><name>TDB</name></author><id>tag:tdeboissiere.github.io,2016-05-14:h5py-vs-npz.html</id><summary type="html">&lt;h1&gt;Data engineering for computer vision&lt;/h1&gt;
 &lt;p&gt;Lately, I've been thinking hard about the best way to organize my data before feeding it to a machine learning classifier or regressor. 
 I have a few guiding principles in mind:&lt;/p&gt;
 &lt;ul&gt;
@@ -184,7 +738,7 @@ npy time: 0.483348703384
 &lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
 
 &lt;p&gt;Which is even faster than the &lt;code&gt;.npy&lt;/code&gt; version !&lt;/p&gt;
-&lt;p&gt;Later on, I'll try to give more details on my data pipeline.&lt;/p&gt;</summary><category term="numpy"></category><category term="h5py"></category></entry><entry><title>AWS Part 3 : Installing python and custom AMI</title><link href="http://tdeboissiere.github.io/aws-part-3-installing-python-and-custom-ami.html" rel="alternate"></link><published>2016-01-04T00:00:00+11:00</published><author><name>TDB</name></author><id>tag:tdeboissiere.github.io,2016-01-04:aws-part-3-installing-python-and-custom-ami.html</id><summary type="html">&lt;h1&gt;1. Launch an Amazon instance&lt;/h1&gt;
+&lt;p&gt;Later on, I'll try to give more details on my data pipeline.&lt;/p&gt;</summary><category term="numpy"></category><category term="h5py"></category><category term="python"></category></entry><entry><title>AWS Part 3 : Installing python and custom AMI</title><link href="http://tdeboissiere.github.io/aws-part-3-installing-python-and-custom-ami.html" rel="alternate"></link><published>2016-01-04T00:00:00+11:00</published><author><name>TDB</name></author><id>tag:tdeboissiere.github.io,2016-01-04:aws-part-3-installing-python-and-custom-ami.html</id><summary type="html">&lt;h1&gt;1. Launch an Amazon instance&lt;/h1&gt;
 &lt;p&gt;Launch an Amazon instance corresponding to your needs.
 For more information, check &lt;a href="../AWS tutorial part 1"&gt;AWS Part 1&lt;/a&gt;.&lt;/p&gt;
 &lt;h1&gt;2. Install python software&lt;/h1&gt;

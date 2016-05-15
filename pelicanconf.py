@@ -13,7 +13,7 @@ PATH = 'content'
 # Theme and architecture
 #########################
 
-#General
+# General
 THEME = 'themes/pelican-bootstrap3'
 BOOTSTRAP_THEME = "united"
 DEFAULT_PAGINATION = 10
@@ -21,7 +21,7 @@ PYGMENTS_STYLE = "monokai"
 # Banner and title
 BANNER = 'images/banner.JPG'
 BANNER_SUBTITLE = 'Machine Learning, Data science and Ponies'
-#Menu
+# Menu
 DISPLAY_PAGES_ON_MENU = False
 BOOTSTRAP_NAVBAR_INVERSE = True
 DISPLAY_CATEGORIES_ON_MENU = False
@@ -36,12 +36,11 @@ SOCIAL = (('linkedin', 'https://www.linkedin.com/in/thibault-main-de-boissi%C3%A
           ('github', 'http://github.com/tdeboissiere'))
 
 
-
 # Title menu options
 MENUITEMS = (
-			('About','/pages/about.html'),
-			('Projects','/pages/project.html'),
-			)
+    ('About','/pages/about.html'),
+    ('Projects','/pages/project.html'),
+)
 
 # Order archives
 NEWEST_FIRST_ARCHIVES = True
@@ -71,7 +70,7 @@ from pymdownx.inlinehilite import InlineHiliteExtension
 
 
 MD_EXTENSIONS = [
-	CodeHiliteExtension(css_class='highlight', linenums = True),
+    CodeHiliteExtension(css_class='highlight', linenums=True),
     "pymdownx.extra",
     "pymdownx.mark",
     "pymdownx.caret",
@@ -80,7 +79,7 @@ MD_EXTENSIONS = [
     "pymdownx.githubemoji"
 ]
 
-# No Feed generation 
+# No Feed generation
 FEED_ALL_ATOM = None
 CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
