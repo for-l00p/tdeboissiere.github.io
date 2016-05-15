@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en" prefix="og: http://ogp.me/ns# fb: https://www.facebook.com/2008/fbml">
+<head>
+    <title>Deep Learning Setup - Pony Pony Learn Learn</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+<link rel="canonical" href="http://tdeboissiere.github.io/deep-learning-setup.html">
+
+        <meta name="author" content="TDB" />
+        <meta name="keywords" content="python,cuda,theano,caffe" />
+        <meta name="description" content="Instructions to setup common deep learning tools on Ubuntu 14.04" />
+
+        <meta property="og:site_name" content="Pony Pony Learn Learn" />
+        <meta property="og:type" content="article"/>
+        <meta property="og:title" content="Deep Learning Setup"/>
+        <meta property="og:url" content="http://tdeboissiere.github.io/deep-learning-setup.html"/>
+        <meta property="og:description" content="Instructions to setup common deep learning tools on Ubuntu 14.04"/>
+        <meta property="article:published_time" content="2016-05-15" />
+            <meta property="article:section" content="Deep Learning" />
+            <meta property="article:tag" content="python" />
+            <meta property="article:tag" content="cuda" />
+            <meta property="article:tag" content="theano" />
+            <meta property="article:tag" content="caffe" />
+            <meta property="article:author" content="TDB" />
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="http://tdeboissiere.github.io/theme/css/bootstrap.united.min.css" type="text/css"/>
+    <link href="http://tdeboissiere.github.io/theme/css/font-awesome.min.css" rel="stylesheet">
+
+    <link href="http://tdeboissiere.github.io/theme/css/pygments/monokai.css" rel="stylesheet">
+    <link href="http://tdeboissiere.github.io/theme/tipuesearch/tipuesearch.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://tdeboissiere.github.io/theme/css/style.css" type="text/css"/>
+
+        <link href="http://tdeboissiere.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
+              title="Pony Pony Learn Learn ATOM Feed"/>
+
+
+
+        <link href="http://tdeboissiere.github.io/feeds/deep-learning.atom.xml" type="application/atom+xml" rel="alternate"
+              title="Pony Pony Learn Learn Deep Learning ATOM Feed"/>
+
+</head>
+<body>
+
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://tdeboissiere.github.io/" class="navbar-brand">
+Pony Pony Learn Learn            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                    <li><a href="/pages/about.html">About</a></li>
+                    <li><a href="/pages/project.html">Projects</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><span>
+                <form class="navbar-search" action="/search.html">
+                  <input type="text" class="search-query" placeholder="Search" name="q" id="tipue_search_input" required>
+                </form></span>
+              </li>
+              <li><a href="http://tdeboissiere.github.io/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archives</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+<!-- Banner -->
+<!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+    <section id="content">
+        <article>
+            <header class="page-header">
+                <h1>
+                    <a href="http://tdeboissiere.github.io/deep-learning-setup.html"
+                       rel="bookmark"
+                       title="Permalink to Deep Learning Setup">
+                        Deep Learning Setup
+                    </a>
+                </h1>
+            </header>
+            <div class="entry-content">
+                <div class="panel">
+                    <div class="panel-body">
+<footer class="post-info">
+    <span class="label label-default">Date</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time datetime="2016-05-15T00:00:00+10:00"> mai 15, 2016</time>
+    </span>
+
+
+
+
+
+<span class="label label-default">Tags</span>
+	<a href="http://tdeboissiere.github.io/tag/python.html">python</a>
+        /
+	<a href="http://tdeboissiere.github.io/tag/cuda.html">cuda</a>
+        /
+	<a href="http://tdeboissiere.github.io/tag/theano.html">theano</a>
+        /
+	<a href="http://tdeboissiere.github.io/tag/caffe.html">caffe</a>
+    
+</footer><!-- /.post-info -->                    </div>
+                </div>
+                <p>hese instructions are for Linux (Ubuntu) based but should be adaptable to other distros without too much work</p>
+<h1>First make sure Ubuntu is up to date</h1>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span>sudo apt-get update  
+sudo apt-get upgrade  
+sudo apt-get install build-essential  
+sudo apt-get autoremove
+</pre></div>
+</td></tr></table>
+
+<h1>Install gfortran (to compile OpenBlas)</h1>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>sudo apt-get install gfortran
+</pre></div>
+</td></tr></table>
+
+<h1>Configure OpenBlas for fast linear algebra operations</h1>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span>cd git  
+git clone https://github.com/xianyi/OpenBLAS  
+cd OpenBLAS  
+make FC=gfortran  
+sudo make PREFIX=/usr/local install
+</pre></div>
+</td></tr></table>
+
+<h1>The tricky bit: getting your GPU up and running</h1>
+<h3>First verify your GPU is nVidia compatible</h3>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>lspci | grep -i nvidia
+</pre></div>
+</td></tr></table>
+
+<p>You should see something like</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="mi">03</span><span class="o">:</span><span class="mf">00.0</span> <span class="mi">3</span><span class="n">D</span> <span class="n">controller</span><span class="o">:</span> <span class="n">NVIDIA</span> <span class="n">Corporation</span> <span class="n">GM108M</span> <span class="o">[</span><span class="n">GeForce</span> <span class="mi">830</span><span class="n">M</span><span class="o">]</span> <span class="o">(</span><span class="n">rev</span> <span class="n">ff</span><span class="o">)</span>
+</pre></div>
+</td></tr></table>
+
+<p>In my case, a GeForce 830M which is CUDA compatible: perfect !</p>
+<p>Next we should make sure the drivers are up to date:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span>sudo add-apt-repository ppa:graphics-drivers/ppa
+sudo apt-get update
+sudo apt-get install nvidia-352
+</pre></div>
+</td></tr></table>
+
+<p>This is the official repository which should be safe to add to your PPA list. There are newer drivers but this one is the recommended one. Restart your system afterwards.</p>
+<p>Next step: configuring CUDA</p>
+<h3>Install cuda</h3>
+<p>Go to </p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>https://developer.nvidia.com/cuda-downloads
+</pre></div>
+</td></tr></table>
+
+<p>Select distribution and follow the instructions in the guide to set up CUDA. The guide is long because it deals with multiple Unix distributions. The core instructions are actually pretty limited.</p>
+<p>Points you should pay attention to:</p>
+<ul>
+<li>For some Unix distributions it is crucial to disable the nouveau drivers which may conflict with the nVidia ones.</li>
+<li>Make sure to add CUDA to your <code>.bashrc</code> or <code>.zshrc</code></li>
+</ul>
+<p>The instructions for the last point are in the guide but let's paste them here for completeness:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="x">echo &#39;export PATH=/usr/local/cuda/bin:</span><span class="p">$</span><span class="nv">PATH</span><span class="x">&#39; &gt;&gt; ~/.bashrc</span>
+<span class="x">echo &#39;export LD_LIBRARY_PATH=/usr/local/cuda/lib64:</span><span class="p">$</span><span class="nv">LD_LIBRARY_PATH</span><span class="x">&#39; &gt;&gt; ~/.bashrc</span>
+<span class="x">source ~/.bashrc</span>
+</pre></div>
+</td></tr></table>
+
+<p>The guide also gives you the opportunity to test your CUDA installation by compiling some examples. Compile them with:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span>/usr/local/cuda/bin/cuda-install-samples-7.5.sh ~/cuda-samples
+cd ~/cuda-samples/NVIDIA*Samples
+make -j $(($(nproc) + 1))
+</pre></div>
+</td></tr></table>
+
+<p>The $(($(nproc) + 1)) statement uses all the available cores on your machines to compile faster.</p>
+<p>Next step is to install CuDNN.</p>
+<h3>Install CUDNN</h3>
+<p>Go to </p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>https://developer.nvidia.com/cudnn
+</pre></div>
+</td></tr></table>
+
+<p>Register, download and extract files
+Currently (Apr 2016), theano is not up to date with the latest cuda (cudnn v5) so for now, use cudnn v4.</p>
+<p>A <code>&lt;extractionpath&gt;/cuda</code> is created
+Copy the contents of the /cuda folder to your cuda installation repository
+On Ubuntum this should be :</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span>cd &lt;extractionpath&gt;cuda
+sudo cp lib64/* /usr/local/cuda/lib64/
+sudo cp include/cudnn.h /usr/local/cuda/include/
+</pre></div>
+</td></tr></table>
+
+<p>If everything's working fine, you can move on to the next step: configuring python for scientific computing.</p>
+<h1>Configure python</h1>
+<h3>Download anaconda</h3>
+<p>The Anaconda distribution has most libraries of interest and can super easily be set up on Linux, Windows and Mac:</p>
+<p>Go to </p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>https://www.continuum.io/downloads
+</pre></div>
+</td></tr></table>
+
+<p>Download the binaries and run</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>bash Anaconda-x.y.z-Linux-x86_64.sh (Linux)
+</pre></div>
+</td></tr></table>
+
+<h3>Install pip</h3>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>conda install pip
+</pre></div>
+</td></tr></table>
+
+<h3>Install the optional pydot</h3>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>pip install pydot
+</pre></div>
+</td></tr></table>
+
+<p>You may have to change your version of pyparser if you get an error message.</p>
+<p>Now let's move on to deep learning libraries. We'll start with theano.</p>
+<h1>Theano installation</h1>
+<h3>Install bleeding edge theano</h3>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span>pip install --upgrade --no-deps git+git://github.com/Theano/Theano.git
+</pre></div>
+</td></tr></table>
+
+<h3>Configure theano with a .theanorc file</h3>
+<p>In your home directory, create a <code>.theanorc</code> file in which you'll put the following:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">[global]</span>
+<span class="na">device</span> <span class="o">=</span> <span class="s">gpu  </span>
+<span class="na">floatX</span> <span class="o">=</span> <span class="s">float32</span>
+
+<span class="k">[blas]</span>
+<span class="na">ldflags</span> <span class="o">=</span> <span class="s">-L/usr/local/lib -lopenblas</span>
+
+<span class="k">[nvcc]</span>
+<span class="na">fastmath</span> <span class="o">=</span> <span class="s">True</span>
+
+<span class="k">[cuda]</span>
+<span class="na">root</span> <span class="o">=</span> <span class="s">/usr/lib/nvidia-cuda-toolkit</span>
+
+<span class="k">[dnn.conv]</span>
+<span class="na">algo_bwd_filter</span> <span class="o">=</span> <span class="s">deterministic</span>
+<span class="na">algo_bwd_data</span> <span class="o">=</span> <span class="s">deterministic</span>
+</pre></div>
+</td></tr></table>
+
+<p>The last flag may slow down the computations but allows deterministic results. To get faster convolutions, you should set it to:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">[dnn.conv]</span>
+<span class="na">algo_fwd</span> <span class="o">=</span> <span class="s">time_once</span>
+<span class="na">algo_bwd_data</span> <span class="o">=</span> <span class="s">time_once</span>
+</pre></div>
+</td></tr></table>
+
+<h3>Check theano sees cudnn</h3>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">theano.sandbox.cuda.dnn</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">Using</span> <span class="n">gpu</span> <span class="n">device</span> <span class="mi">0</span><span class="p">:</span> <span class="n">Quadro</span> <span class="n">K620</span> <span class="p">(</span><span class="n">CNMeM</span> <span class="ow">is</span> <span class="n">disabled</span><span class="p">,</span> <span class="n">CuDNN</span> <span class="mi">4007</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">dnn_available</span><span class="p">()</span>
+<span class="bp">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">print</span> <span class="n">dnn_available</span><span class="o">.</span><span class="n">msg</span>
+<span class="bp">None</span>
+<span class="o">&gt;&gt;&gt;</span>
+</pre></div>
+</td></tr></table>
+
+<h3>Theano test script</h3>
+<p>Run this script to make sure theano can use the GPU/CPU normally</p>
+<p>```python
+from theano import function, config, shared, sandbox<br />
+import theano.tensor as T<br />
+import numpy<br />
+import time</p>
+<p>vlen = 10 * 30 * 768  # 10 x #cores x # threads per core<br />
+iters = 1000</p>
+<p>rng = numpy.random.RandomState(22)<br />
+x = shared(numpy.asarray(rng.rand(vlen), config.floatX))<br />
+f = function([], T.exp(x))<br />
+print f.maker.fgraph.toposort()<br />
+t0 = time.time()<br />
+for i in xrange(iters):<br />
+    r = f()
+t1 = time.time()<br />
+print 'Looping %d times took' % iters, t1 - t0, 'seconds'<br />
+print 'Result is', r<br />
+if numpy.any([isinstance(x.op, T.Elemwise) for x in f.maker.fgraph.toposort()]):<br />
+    print 'Used the cpu'
+else:<br />
+    print 'Used the gpu'</p>
+<h3>You can enable CNMeM with</h3>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="k">[lib]</span>
+<span class="na">cnmem</span> <span class="o">=</span> <span class="s">0.01</span>
+</pre></div>
+</td></tr></table>
+
+<p>in the <code>.theanorc</code> file</p>
+<p>The value represents the start size (either in MB or the fraction of total GPU memory) of the memory pool. If more memory is needed, Theano will try to obtain more, but this can cause memory fragmentation.</p>
+<h3>Check speed of theano/OpenBlas</h3>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="sb">`python -c &quot;import os, theano; print os.path.dirname(theano.__file__)&quot;`</span><span class="o">/</span><span class="n">misc</span><span class="o">/</span><span class="n">check_blas</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</td></tr></table>
+
+<p>This will run some tests ans you can compare the speed of your setup with different reference setups</p>
+<h3>Run some tests (optional and very slow...)</h3>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="n">NumPy</span> <span class="p">(</span><span class="o">~</span><span class="mi">30</span><span class="n">s</span><span class="p">):</span> <span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;import numpy; numpy.test()&quot;</span>
+<span class="n">SciPy</span> <span class="p">(</span><span class="o">~</span><span class="mi">1</span><span class="n">m</span><span class="p">):</span> <span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;import scipy; scipy.test()&quot;</span>
+<span class="n">Theano</span> <span class="p">(</span><span class="o">~</span><span class="mi">30</span><span class="n">m</span><span class="p">):</span> <span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;import theano; theano.test()&quot;</span>
+</pre></div>
+</td></tr></table>
+
+<h3>In case of an error message dealing with theano cache:</h3>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="x">rm -rf </span><span class="p">$</span><span class="nv">HOME</span><span class="x">/.theano</span>
+</pre></div>
+</td></tr></table>
+
+<p>Now let's setup Caffe, which is somewhat more involved</p>
+<h1>Caffe installation</h1>
+<h3>General dependencies</h3>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span>sudo apt-get install libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libhdf5-serial-dev protobuf-compiler
+sudo apt-get install --no-install-recommends libboost-all-dev
+sudo apt-get install libgflags-dev libgoogle-glog-dev liblmdb-dev
+</pre></div>
+</td></tr></table>
+
+<p>If an error is thrown with the boost library do :</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="highlight"><pre><span></span>sudo apt-get --purge remove libboost-all-dev libboost-dev libboost-doc
+sudo apt-get install -f
+sudo dpkg --configure -a
+sudo apt-get clean
+sudo apt-get update
+sudo apt-get install libboost1.54-dev
+</pre></div>
+</td></tr></table>
+
+<p>Then relaunch the commands to install general dependencies</p>
+<h3>Get caffe</h3>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span>git clone https://github.com/BVLC/caffe.git
+
+cp Makefile.config.example Makefile.config
+# Adjust Makefile.config (for example, if using Anaconda Python, or if cuDNN is desired example at the end of this post)
+</pre></div>
+</td></tr></table>
+
+<p>You should especially pay attention to the anaconda part, the opencv part, the use CUDNN part.
+If you have openblas installed, replace </p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="highlight"><pre><span></span>Blas := atlas to
+BLAS := open
+</pre></div>
+</td></tr></table>
+
+<p>Then:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span>make all -j $(($(nproc) + 1))
+make pycaffe -j $(($(nproc) + 1))
+make test -j $(($(nproc) + 1))
+make runtest -j $(($(nproc) + 1))
+</pre></div>
+</td></tr></table>
+
+<p>More often than not, you may run into errors during comilation. Here are a few gotchas I've dealt with:</p>
+<h3>Conflict with HDF5</h3>
+<p>Add anaconda2 to the lib path to link the proper hdf5 library. Also add the <code>x86_64-linux-gnu</code> path.
+In your <code>.bashrc</code>:</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="x">export LD_LIBRARY_PATH=</span><span class="p">$</span><span class="nv">LD_LIBRARY_PATH</span><span class="x">:/home/tmain/anaconda2/lib</span>
+<span class="x">export LD_LIBRARY_PATH=/lib/x86_64-linux-gnu:</span><span class="p">$</span><span class="nv">LD_LIBRARY_PATH</span><span class="x"></span>
+<span class="x">export PYTHONPATH=~/caffe/python:</span><span class="p">$</span><span class="nv">PYTHONPATH</span><span class="x"></span>
+</pre></div>
+</td></tr></table>
+
+<h3>Getting pycaffe to work :</h3>
+<p>In the folder <code>caffe/python</code> install all the requirements</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="x">for req in </span><span class="p">$(</span><span class="err">cat</span> <span class="err">requirements.txt</span><span class="p">)</span><span class="x">; do pip install </span><span class="p">$</span><span class="nv">req</span><span class="x">; done</span>
+</pre></div>
+</td></tr></table>
+
+<p>Then export python path :
+In your <code>.basrhc</code> file :</p>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="x">export PYTHONPATH=&lt;caffe-home&gt;/python:</span><span class="p">$</span><span class="nv">PYTHONPATH</span><span class="x"></span>
+</pre></div>
+</td></tr></table>
+
+<h3>My Makefile.config for Caffe</h3>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="c">## Refer to http://caffe.berkeleyvision.org/installation.html</span>
+<span class="c"># Contributions simplifying and improving our build system are welcome!</span>
+
+<span class="c"># cuDNN acceleration switch (uncomment to build with cuDNN).</span>
+<span class="nv">USE_CUDNN</span> <span class="o">:=</span> 1
+
+<span class="c"># CPU-only switch (uncomment to build without GPU support).</span>
+<span class="c"># CPU_ONLY := 1</span>
+
+<span class="c"># uncomment to disable IO dependencies and corresponding data layers</span>
+<span class="c"># USE_OPENCV := 0</span>
+<span class="c"># USE_LEVELDB := 0</span>
+<span class="c"># USE_LMDB := 0</span>
+
+<span class="c"># uncomment to allow MDB_NOLOCK when reading LMDB files (only if necessary)</span>
+<span class="c">#   You should not set this flag if you will be reading LMDBs with any</span>
+<span class="c">#   possibility of simultaneous read and write</span>
+<span class="c"># ALLOW_LMDB_NOLOCK := 1</span>
+
+<span class="c"># Uncomment if you&#39;re using OpenCV 3</span>
+<span class="nv">OPENCV_VERSION</span> <span class="o">:=</span> 3
+
+<span class="c"># To customize your choice of compiler, uncomment and set the following.</span>
+<span class="c"># N.B. the default for Linux is g++ and the default for OSX is clang++</span>
+<span class="c"># CUSTOM_CXX := g++</span>
+
+<span class="c"># CUDA directory contains bin/ and lib/ directories that we need.</span>
+<span class="nv">CUDA_DIR</span> <span class="o">:=</span> /usr/local/cuda
+<span class="c"># On Ubuntu 14.04, if cuda tools are installed via</span>
+<span class="c"># &quot;sudo apt-get install nvidia-cuda-toolkit&quot; then use this instead:</span>
+<span class="c"># CUDA_DIR := /usr</span>
+
+<span class="c"># CUDA architecture setting: going with all of them.</span>
+<span class="c"># For CUDA &lt; 6.0, comment the *_50 lines for compatibility.</span>
+<span class="nv">CUDA_ARCH</span> <span class="o">:=</span> -gencode <span class="nv">arch</span><span class="o">=</span>compute_20,code<span class="o">=</span>sm_20 <span class="se">\</span>
+            -gencode <span class="nv">arch</span><span class="o">=</span>compute_20,code<span class="o">=</span>sm_21 <span class="se">\</span>
+            -gencode <span class="nv">arch</span><span class="o">=</span>compute_30,code<span class="o">=</span>sm_30 <span class="se">\</span>
+            -gencode <span class="nv">arch</span><span class="o">=</span>compute_35,code<span class="o">=</span>sm_35 <span class="se">\</span>
+            -gencode <span class="nv">arch</span><span class="o">=</span>compute_50,code<span class="o">=</span>sm_50 <span class="se">\</span>
+            -gencode <span class="nv">arch</span><span class="o">=</span>compute_50,code<span class="o">=</span>compute_50
+
+<span class="c"># BLAS choice:</span>
+<span class="c"># atlas for ATLAS (default)</span>
+<span class="c"># mkl for MKL</span>
+<span class="c"># open for OpenBlas</span>
+<span class="nv">BLAS</span> <span class="o">:=</span> open
+<span class="c"># Custom (MKL/ATLAS/OpenBLAS) include and lib directories.</span>
+<span class="c"># Leave commented to accept the defaults for your choice of BLAS</span>
+<span class="c"># (which should work)!</span>
+<span class="c"># BLAS_INCLUDE := /path/to/your/blas</span>
+<span class="c"># BLAS_LIB := /path/to/your/blas</span>
+
+<span class="c"># Homebrew puts openblas in a directory that is not on the standard search path</span>
+<span class="c"># BLAS_INCLUDE := $(shell brew --prefix openblas)/include</span>
+<span class="c"># BLAS_LIB := $(shell brew --prefix openblas)/lib</span>
+
+<span class="c"># This is required only if you will compile the matlab interface.</span>
+<span class="c"># MATLAB directory should contain the mex binary in /bin.</span>
+<span class="c"># MATLAB_DIR := /usr/local</span>
+<span class="c"># MATLAB_DIR := /Applications/MATLAB_R2012b.app</span>
+
+<span class="c"># NOTE: this is required only if you will compile the python interface.</span>
+<span class="c"># We need to be able to find Python.h and numpy/arrayobject.h.</span>
+<span class="c"># PYTHON_INCLUDE := /usr/include/python2.7 \</span>
+<span class="c">#       /usr/lib/python2.7/dist-packages/numpy/core/include</span>
+<span class="c"># Anaconda Python distribution is quite popular. Include path:</span>
+<span class="c"># Verify anaconda location, sometimes it&#39;s in root.</span>
+<span class="nv">ANACONDA_HOME</span> <span class="o">:=</span> <span class="k">$(</span>HOME<span class="k">)</span>/anaconda2
+<span class="nv">PYTHON_INCLUDE</span> <span class="o">:=</span> <span class="k">$(</span>ANACONDA_HOME<span class="k">)</span>/include <span class="se">\</span>
+        <span class="k">$(</span>ANACONDA_HOME<span class="k">)</span>/include/python2.7 <span class="se">\</span>
+        <span class="k">$(</span>ANACONDA_HOME<span class="k">)</span>/lib/python2.7/site-packages/numpy/core/include <span class="se">\</span>
+
+<span class="c"># Uncomment to use Python 3 (default is Python 2)</span>
+<span class="c"># PYTHON_LIBRARIES := boost_python3 python3.5m</span>
+<span class="c"># PYTHON_INCLUDE := /usr/include/python3.5m \</span>
+<span class="c">#                 /usr/lib/python3.5/dist-packages/numpy/core/include</span>
+
+<span class="c"># We need to be able to find libpythonX.X.so or .dylib.</span>
+<span class="c"># PYTHON_LIB := /usr/lib</span>
+<span class="nv">PYTHON_LIB</span> <span class="o">:=</span>/home/tmain/anaconda2/lib
+
+<span class="c"># Homebrew installs numpy in a non standard path (keg only)</span>
+<span class="c"># PYTHON_INCLUDE += $(dir $(shell python -c &#39;import numpy.core; print(numpy.core.__file__)&#39;))/include</span>
+<span class="c"># PYTHON_LIB += $(shell brew --prefix numpy)/lib</span>
+
+<span class="c"># Uncomment to support layers written in Python (will link against Python libs)</span>
+<span class="nv">WITH_PYTHON_LAYER</span> <span class="o">:=</span> 1
+
+<span class="c"># Whatever else you find you need goes here.</span>
+<span class="nv">INCLUDE_DIRS</span> <span class="o">:=</span> <span class="k">$(</span>PYTHON_INCLUDE<span class="k">)</span> /usr/local/include
+<span class="nv">LIBRARY_DIRS</span> <span class="o">:=</span> <span class="k">$(</span>PYTHON_LIB<span class="k">)</span> /usr/local/lib /usr/lib
+
+<span class="c"># If Homebrew is installed at a non standard location (for example your home directory) and you use it for general dependencies</span>
+<span class="c"># INCLUDE_DIRS += $(shell brew --prefix)/include</span>
+<span class="c"># LIBRARY_DIRS += $(shell brew --prefix)/lib</span>
+
+<span class="c"># Uncomment to use `pkg-config` to specify OpenCV library paths.</span>
+<span class="c"># (Usually not necessary -- OpenCV libraries are normally installed in one of the above $LIBRARY_DIRS.)</span>
+<span class="c"># USE_PKG_CONFIG := 1</span>
+
+<span class="nv">BUILD_DIR</span> <span class="o">:=</span> build
+<span class="nv">DISTRIBUTE_DIR</span> <span class="o">:=</span> distribute
+
+<span class="c"># Uncomment for debugging. Does not work on OSX due to https://github.com/BVLC/caffe/issues/171</span>
+<span class="c"># DEBUG := 1</span>
+
+<span class="c"># The ID of the GPU that &#39;make runtest&#39; will use to run unit tests.</span>
+<span class="nv">TEST_GPUID</span> <span class="o">:=</span> 0
+
+<span class="c"># enable pretty build (comment to see full commands)</span>
+<span class="nv">Q</span> <span class="o">?=</span> @
+</pre></div>
+</td></tr></table>
+            </div>
+            <!-- /.entry-content -->
+    <hr/>
+    <section class="comments" id="comments">
+        <h2>Comments</h2>
+
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'tdeboissiere'; // required: replace example with your forum shortname
+
+                    var disqus_identifier = 'deep-learning-setup';
+                var disqus_url = 'http://tdeboissiere.github.io//deep-learning-setup.html';
+
+            var disqus_config = function () {
+                this.language = "en";
+            };
+
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function () {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript';
+                dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by
+            Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+    </section>
+        </article>
+    </section>
+
+        </div>
+        <div class="col-sm-3" id="sidebar">
+            <aside>
+
+<section class="well well-sm">
+    <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Social</span></h4>
+              <ul class="list-group" id="social">
+                <li class="list-group-item"><a href="https://www.linkedin.com/in/thibault-main-de-boissi%C3%A8re-25476699"><i class="fa fa-linkedin-square fa-lg"></i> linkedin</a></li>
+                <li class="list-group-item"><a href="http://github.com/tdeboissiere"><i class="fa fa-github-square fa-lg"></i> github</a></li>
+              </ul>
+            </li>
+
+            <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Recent Posts</span></h4>
+                <ul class="list-group" id="recentposts">
+                    <li class="list-group-item">
+                        <a href="http://tdeboissiere.github.io/deep-learning-setup.html">
+                            Deep Learning Setup
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="http://tdeboissiere.github.io/h5py-vs-npz.html">
+                            h5py vs npz
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="http://tdeboissiere.github.io/aws-part-3-installing-python-and-custom-ami.html">
+                            AWS Part 3 : Installing python and custom AMI
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="http://tdeboissiere.github.io/aws-part-2-ec2-instances.html">
+                            AWS Part 2 : EC2 instances
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="http://tdeboissiere.github.io/aws-part-1-setting-up-amazon-ec2.html">
+                            AWS Part 1 : Setting up Amazon EC2
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="list-group-item"><a href="http://tdeboissiere.github.io/"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Categories</span></h4></a>
+                <ul class="list-group" id="categories">
+                    <li class="list-group-item">
+                        <a href="http://tdeboissiere.github.io/category/aws.html">
+                            <i class="fa fa-folder-open fa-lg"></i> AWS
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="http://tdeboissiere.github.io/category/deep-learning.html">
+                            <i class="fa fa-folder-open fa-lg"></i> Deep Learning
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="http://tdeboissiere.github.io/category/python.html">
+                            <i class="fa fa-folder-open fa-lg"></i> Python
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="list-group-item"><a href="http://tdeboissiere.github.io/"><h4><i class="fa fa-tags fa-lg"></i><span class="icon-label">Tags</span></h4></a>
+                <ul class="list-group " id="tags">
+                    <li class="list-group-item tag-1">
+                        <a href="http://tdeboissiere.github.io/tag/aws.html">
+                            AWS
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-2">
+                        <a href="http://tdeboissiere.github.io/tag/python.html">
+                            python
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="http://tdeboissiere.github.io/tag/numpy.html">
+                            numpy
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="http://tdeboissiere.github.io/tag/cuda.html">
+                            cuda
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="http://tdeboissiere.github.io/tag/caffe.html">
+                            caffe
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="http://tdeboissiere.github.io/tag/h5py.html">
+                            h5py
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="http://tdeboissiere.github.io/tag/theano.html">
+                            theano
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+
+    <li class="list-group-item">
+        <ul class="list-group" id="links">
+            <img width="100%" class="img-thumbnail" src="images/pony.jpg"/>
+        </ul>
+    </li>
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <hr>
+      <div class="row">
+         <div class="col-xs-10">&copy; 2016 Thibault de Boissiere
+            &middot; Powered by <a href="https://github.com/DandyDev/pelican-bootstrap3" target="_blank">pelican-bootstrap3</a>,
+            <a href="http://docs.getpelican.com/" target="_blank">Pelican</a>,
+            <a href="http://getbootstrap.com" target="_blank">Bootstrap</a>         </div>
+         <div class="col-xs-2"><p class="pull-right"><i class="fa fa-arrow-up"></i> <a href="#">Back to top</a></p></div>
+      </div>
+   </div>
+</footer>
+<script src="http://tdeboissiere.github.io/theme/js/jquery.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="http://tdeboissiere.github.io/theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="http://tdeboissiere.github.io/theme/js/respond.min.js"></script>
+
+    <script src="http://tdeboissiere.github.io/theme/js/bodypadding.js"></script>
+    <!-- Disqus -->
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'tdeboissiere'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script');
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+    <!-- End Disqus Code -->
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-72484622-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+
+</body>
+</html>
