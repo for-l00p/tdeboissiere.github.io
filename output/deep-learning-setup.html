@@ -372,7 +372,9 @@ else:<br />
 <h3>General dependencies</h3>
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
-3</pre></div></td><td class="code"><div class="highlight"><pre><span></span>sudo apt-get install libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libhdf5-serial-dev protobuf-compiler
+3
+4</pre></div></td><td class="code"><div class="highlight"><pre><span></span>sudo apt-get install libprotobuf-dev libleveldb-dev libsnappy-dev
+sudo apt-get install libopencv-dev libhdf5-serial-dev protobuf-compiler
 sudo apt-get install --no-install-recommends libboost-all-dev
 sudo apt-get install libgflags-dev libgoogle-glog-dev liblmdb-dev
 </pre></div>
@@ -398,10 +400,12 @@ sudo apt-get install libboost1.54-dev
 <table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
-4</pre></div></td><td class="code"><div class="highlight"><pre><span></span>git clone https://github.com/BVLC/caffe.git
+4
+5</pre></div></td><td class="code"><div class="highlight"><pre><span></span>git clone https://github.com/BVLC/caffe.git
 
 cp Makefile.config.example Makefile.config
-# Adjust Makefile.config (for example, if using Anaconda Python, or if cuDNN is desired example at the end of this post)
+# Adjust Makefile.config 
+# (See example at the end of this post)
 </pre></div>
 </td></tr></table>
 
@@ -640,10 +644,6 @@ In your <code>.basrhc</code> file :</p>
 <span class="c"># PYTHON_LIB := /usr/lib</span>
 <span class="nv">PYTHON_LIB</span> <span class="o">:=</span>/home/tmain/anaconda2/lib
 
-<span class="c"># Homebrew installs numpy in a non standard path (keg only)</span>
-<span class="c"># PYTHON_INCLUDE += $(dir $(shell python -c &#39;import numpy.core; print(numpy.core.__file__)&#39;))/include</span>
-<span class="c"># PYTHON_LIB += $(shell brew --prefix numpy)/lib</span>
-
 <span class="c"># Uncomment to support layers written in Python (will link against Python libs)</span>
 <span class="nv">WITH_PYTHON_LAYER</span> <span class="o">:=</span> 1
 
@@ -651,18 +651,22 @@ In your <code>.basrhc</code> file :</p>
 <span class="nv">INCLUDE_DIRS</span> <span class="o">:=</span> <span class="k">$(</span>PYTHON_INCLUDE<span class="k">)</span> /usr/local/include
 <span class="nv">LIBRARY_DIRS</span> <span class="o">:=</span> <span class="k">$(</span>PYTHON_LIB<span class="k">)</span> /usr/local/lib /usr/lib
 
-<span class="c"># If Homebrew is installed at a non standard location (for example your home directory) and you use it for general dependencies</span>
+<span class="c"># If Homebrew is installed at a non standard location </span>
+<span class="c"># (for example your home directory) </span>
+<span class="c"># and you use it for general dependencies</span>
 <span class="c"># INCLUDE_DIRS += $(shell brew --prefix)/include</span>
 <span class="c"># LIBRARY_DIRS += $(shell brew --prefix)/lib</span>
 
 <span class="c"># Uncomment to use `pkg-config` to specify OpenCV library paths.</span>
-<span class="c"># (Usually not necessary -- OpenCV libraries are normally installed in one of the above $LIBRARY_DIRS.)</span>
+<span class="c"># (Usually not necessary -- OpenCV libraries </span>
+<span class="c"># are normally installed in one of the above $LIBRARY_DIRS.)</span>
 <span class="c"># USE_PKG_CONFIG := 1</span>
 
 <span class="nv">BUILD_DIR</span> <span class="o">:=</span> build
 <span class="nv">DISTRIBUTE_DIR</span> <span class="o">:=</span> distribute
 
-<span class="c"># Uncomment for debugging. Does not work on OSX due to https://github.com/BVLC/caffe/issues/171</span>
+<span class="c"># Uncomment for debugging. </span>
+<span class="c"># Does not work on OSX due to https://github.com/BVLC/caffe/issues/171</span>
 <span class="c"># DEBUG := 1</span>
 
 <span class="c"># The ID of the GPU that &#39;make runtest&#39; will use to run unit tests.</span>
@@ -723,6 +727,16 @@ In your <code>.basrhc</code> file :</p>
             <li class="list-group-item"><h4><i class="fa fa-home fa-lg"></i><span class="icon-label">Recent Posts</span></h4>
                 <ul class="list-group" id="recentposts">
                     <li class="list-group-item">
+                        <a href="http://tdeboissiere.github.io/celeba-dataset-a-parallel-download-from-dropbox.html">
+                            CelebA dataset: a parallel download from dropbox
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="http://tdeboissiere.github.io/opencv-and-scikit-image-for-image-inpainting.html">
+                            OpenCV and scikit-image for image inpainting
+                        </a>
+                    </li>
+                    <li class="list-group-item">
                         <a href="http://tdeboissiere.github.io/deep-learning-setup.html">
                             Deep Learning Setup
                         </a>
@@ -735,16 +749,6 @@ In your <code>.basrhc</code> file :</p>
                     <li class="list-group-item">
                         <a href="http://tdeboissiere.github.io/aws-part-3-installing-python-and-custom-ami.html">
                             AWS Part 3 : Installing python and custom AMI
-                        </a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="http://tdeboissiere.github.io/aws-part-2-ec2-instances.html">
-                            AWS Part 2 : EC2 instances
-                        </a>
-                    </li>
-                    <li class="list-group-item">
-                        <a href="http://tdeboissiere.github.io/aws-part-1-setting-up-amazon-ec2.html">
-                            AWS Part 1 : Setting up Amazon EC2
                         </a>
                     </li>
                 </ul>
@@ -777,9 +781,34 @@ In your <code>.basrhc</code> file :</p>
                             AWS
                         </a>
                     </li>
-                    <li class="list-group-item tag-2">
+                    <li class="list-group-item tag-1">
                         <a href="http://tdeboissiere.github.io/tag/python.html">
                             python
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="http://tdeboissiere.github.io/tag/datasets.html">
+                            datasets
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="http://tdeboissiere.github.io/tag/theano.html">
+                            theano
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="http://tdeboissiere.github.io/tag/caffe.html">
+                            caffe
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="http://tdeboissiere.github.io/tag/scikit-image.html">
+                            scikit-image
+                        </a>
+                    </li>
+                    <li class="list-group-item tag-4">
+                        <a href="http://tdeboissiere.github.io/tag/opencv.html">
+                            opencv
                         </a>
                     </li>
                     <li class="list-group-item tag-4">
@@ -793,18 +822,8 @@ In your <code>.basrhc</code> file :</p>
                         </a>
                     </li>
                     <li class="list-group-item tag-4">
-                        <a href="http://tdeboissiere.github.io/tag/caffe.html">
-                            caffe
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
                         <a href="http://tdeboissiere.github.io/tag/h5py.html">
                             h5py
-                        </a>
-                    </li>
-                    <li class="list-group-item tag-4">
-                        <a href="http://tdeboissiere.github.io/tag/theano.html">
-                            theano
                         </a>
                     </li>
                 </ul>

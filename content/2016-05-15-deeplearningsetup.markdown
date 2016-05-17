@@ -230,7 +230,8 @@ Now let's setup Caffe, which is somewhat more involved
 
 ### General dependencies
 
-	sudo apt-get install libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libhdf5-serial-dev protobuf-compiler
+	sudo apt-get install libprotobuf-dev libleveldb-dev libsnappy-dev
+	sudo apt-get install libopencv-dev libhdf5-serial-dev protobuf-compiler
 	sudo apt-get install --no-install-recommends libboost-all-dev
 	sudo apt-get install libgflags-dev libgoogle-glog-dev liblmdb-dev
 
@@ -250,7 +251,8 @@ Then relaunch the commands to install general dependencies
 	git clone https://github.com/BVLC/caffe.git
 
 	cp Makefile.config.example Makefile.config
-	# Adjust Makefile.config (for example, if using Anaconda Python, or if cuDNN is desired example at the end of this post)
+	# Adjust Makefile.config 
+	# (See example at the end of this post)
 
 You should especially pay attention to the anaconda part, the opencv part, the use CUDNN part.
 If you have openblas installed, replace 
@@ -371,10 +373,6 @@ In your `.basrhc` file :
 	# PYTHON_LIB := /usr/lib
 	PYTHON_LIB :=/home/tmain/anaconda2/lib
 
-	# Homebrew installs numpy in a non standard path (keg only)
-	# PYTHON_INCLUDE += $(dir $(shell python -c 'import numpy.core; print(numpy.core.__file__)'))/include
-	# PYTHON_LIB += $(shell brew --prefix numpy)/lib
-
 	# Uncomment to support layers written in Python (will link against Python libs)
 	WITH_PYTHON_LAYER := 1
 
@@ -382,18 +380,22 @@ In your `.basrhc` file :
 	INCLUDE_DIRS := $(PYTHON_INCLUDE) /usr/local/include
 	LIBRARY_DIRS := $(PYTHON_LIB) /usr/local/lib /usr/lib
 
-	# If Homebrew is installed at a non standard location (for example your home directory) and you use it for general dependencies
+	# If Homebrew is installed at a non standard location 
+	# (for example your home directory) 
+	# and you use it for general dependencies
 	# INCLUDE_DIRS += $(shell brew --prefix)/include
 	# LIBRARY_DIRS += $(shell brew --prefix)/lib
 
 	# Uncomment to use `pkg-config` to specify OpenCV library paths.
-	# (Usually not necessary -- OpenCV libraries are normally installed in one of the above $LIBRARY_DIRS.)
+	# (Usually not necessary -- OpenCV libraries 
+	# are normally installed in one of the above $LIBRARY_DIRS.)
 	# USE_PKG_CONFIG := 1
 
 	BUILD_DIR := build
 	DISTRIBUTE_DIR := distribute
 
-	# Uncomment for debugging. Does not work on OSX due to https://github.com/BVLC/caffe/issues/171
+	# Uncomment for debugging. 
+	# Does not work on OSX due to https://github.com/BVLC/caffe/issues/171
 	# DEBUG := 1
 
 	# The ID of the GPU that 'make runtest' will use to run unit tests.

@@ -15,6 +15,7 @@ PATH = 'content'
 
 # General
 THEME = 'themes/pelican-bootstrap3'
+# THEME = 'themes/pelican-free-agent'
 BOOTSTRAP_THEME = "united"
 DEFAULT_PAGINATION = 10
 PYGMENTS_STYLE = "monokai"
