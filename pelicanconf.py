@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 import os
 
 AUTHOR = u'Thibault de Boissiere'
-SITENAME = u'Pony Pony Learn Learn'
+SITENAME = u'20000 layers under the sea'
 SITEURL = ''
 
 PATH = 'content'
@@ -21,7 +21,7 @@ DEFAULT_PAGINATION = 10
 PYGMENTS_STYLE = "monokai"
 # Banner and title
 BANNER = 'images/banner.JPG'
-BANNER_SUBTITLE = 'Machine Learning, Data science and Ponies'
+BANNER_SUBTITLE = 'Machine Learning and Data science'
 # Menu
 DISPLAY_PAGES_ON_MENU = False
 BOOTSTRAP_NAVBAR_INVERSE = True
